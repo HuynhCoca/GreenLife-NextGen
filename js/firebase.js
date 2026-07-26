@@ -17,7 +17,7 @@ import {
     sendPasswordResetEmail,
     fetchSignInMethodsForEmail,
     verifyPasswordResetCode,
-    confirmPasswordReset
+    confirmPasswordReset,
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
 
 // =====================================
@@ -113,6 +113,6 @@ export {
 
     verifyPasswordResetCode,
 
-    confirmPasswordReset
+    confirmPasswordReset,
 
 };

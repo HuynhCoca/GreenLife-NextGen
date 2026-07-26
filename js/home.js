@@ -1,71 +1,129 @@
-import { auth } from './firebase.js';
-import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js';
-
-const authLink = document.getElementById('authLink');
-const logoutBtn = document.getElementById('logoutBtn');
-const userBadge = document.getElementById('userBadge');
-
-function updateUserUI(user) {
-  if (user) {
-    authLink.classList.add('hidden');
-    logoutBtn.classList.remove('hidden');
-    userBadge.textContent = `Signed in as ${user.email || 'user'}`;
-  } else {
-    authLink.classList.remove('hidden');
-    logoutBtn.classList.add('hidden');
-    userBadge.textContent = 'No user signed in';
-  }
-}
-
-onAuthStateChanged(auth, (user) => {
-  updateUserUI(user);
-});
-
-logoutBtn.addEventListener('click', () => {
-  signOut(auth).then(() => {
-    window.location.href = 'auth.html';
-  });
-});
-
-card.innerHTML = `
-    <img src="${blog.imageURL}" alt="${blog.title}">
-
-    <h3>${blog.title}</h3>
-
-    <p>${blog.summary}</p>
-
-    <small>By ${blog.author}</small>
-
-    <a href="blog.html?id=${doc.id}">
-        Read More
-    </a>
-`;
-
-import { db } from "./firebase.js";
-
 import {
+    db,
     collection,
     getDocs,
     query,
-    orderBy
-} from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+    where,
+    orderBy,
+    limit
+} from "./firebase.js";
+
+/* ======================================================
+   GLOBALS
+====================================================== */
 
 const blogGrid = document.getElementById("blogGrid");
+const searchInput = document.getElementById("searchBlog");
+const categoryFilter = document.getElementById("categoryFilter");
+
+let blogs = [];
+let filteredBlogs = [];
+
+/* ======================================================
+   INITIALIZE
+====================================================== */
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    await loadBlogs();
+
+    initializeSearch();
+
+    initializeCategoryFilter();
+
+    animateCounters();
+
+    revealOnScroll();
+
+});
+
+/* ======================================================
+   LOAD BLOGS
+====================================================== */
 
 async function loadBlogs() {
 
-    const q = query(
-        collection(db, "blogs"),
-        orderBy("createdAt", "desc")
-    );
+    try {
 
-    const snapshot = await getDocs(q);
+        const q = query(
+
+            collection(db, "blogs"),
+
+            where("status", "==", "published"),
+
+            orderBy("createdAt", "desc"),
+
+            limit(9)
+
+        );
+
+        const snapshot = await getDocs(q);
+
+        blogs = snapshot.docs.map(doc => ({
+
+            id: doc.id,
+
+            ...doc.data()
+
+        }));
+
+        filteredBlogs = [...blogs];
+
+        renderBlogs(filteredBlogs);
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        blogGrid.innerHTML = `
+
+            <div class="empty-state">
+
+                <i class="bi bi-journal-x"></i>
+
+                <h3>No articles available.</h3>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+/* ======================================================
+   RENDER BLOGS
+====================================================== */
+
+function renderBlogs(data) {
+
+    if (data.length === 0) {
+
+        blogGrid.innerHTML = `
+
+            <div class="empty-state">
+
+                <i class="bi bi-search"></i>
+
+                <h3>No matching articles found.</h3>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
 
     blogGrid.innerHTML = "";
 
-    snapshot.forEach((doc) => {
+    data.forEach(blog => {
 
-        const blog = doc.data();
+        const date = blog.createdAt?.toDate
+            ? blog.createdAt.toDate().toLocaleDateString()
+            : "";
 
         blogGrid.innerHTML += `
 
@@ -73,19 +131,51 @@ async function loadBlogs() {
 
             <img src="${blog.imageURL}" alt="${blog.title}">
 
-            <h3>${blog.title}</h3>
+            <div class="blog-content">
 
-            <p>${blog.summary}</p>
+                <span class="blog-category">
 
-            <small>
-                By ${blog.author}
-            </small>
+                    ${blog.category}
 
-            <br><br>
+                </span>
 
-            <a href="blog.html?id=${doc.id}">
-                Read More →
-            </a>
+                <h3>
+
+                    ${blog.title}
+
+                </h3>
+
+                <p>
+
+                    ${blog.summary}
+
+                </p>
+
+                <div class="blog-meta">
+
+                    <span>
+
+                        ${blog.author}
+
+                    </span>
+
+                    <span>
+
+                        ${date}
+
+                    </span>
+
+                </div>
+
+                <a href="blog.html?id=${blog.id}" class="read-more">
+
+                    Read More
+
+                    <i class="bi bi-arrow-right"></i>
+
+                </a>
+
+            </div>
 
         </article>
 
@@ -95,45 +185,154 @@ async function loadBlogs() {
 
 }
 
-loadBlogs();
+/* ======================================================
+   SEARCH
+====================================================== */
 
+function initializeSearch() {
 
+    if (!searchInput) return;
 
-import {
-    auth,
-    db,
-    collection,
-    query,
-    where,
-    getDocs,
-    onAuthStateChanged
-} from "./firebase.js";
+    searchInput.addEventListener("input", () => {
 
-onAuthStateChanged(auth, async (user) => {
+        const keyword = searchInput.value.toLowerCase();
 
-    if (!user) return;
+        filteredBlogs = blogs.filter(blog =>
 
-    const q = query(
-        collection(db, "accounts"),
-        where("uid", "==", user.uid)
+            blog.title.toLowerCase().includes(keyword) ||
+
+            blog.summary.toLowerCase().includes(keyword)
+
+        );
+
+        applyCategory();
+
+    });
+
+}
+
+/* ======================================================
+   CATEGORY FILTER
+====================================================== */
+
+function initializeCategoryFilter() {
+
+    if (!categoryFilter) return;
+
+    categoryFilter.addEventListener("change", applyCategory);
+
+}
+
+function applyCategory() {
+
+    const keyword = searchInput.value.toLowerCase();
+
+    const category = categoryFilter.value;
+
+    let result = blogs.filter(blog =>
+
+        blog.title.toLowerCase().includes(keyword) ||
+
+        blog.summary.toLowerCase().includes(keyword)
+
     );
 
-    const snapshot = await getDocs(q);
+    if (category !== "all") {
 
-    if (snapshot.empty) return;
+        result = result.filter(
 
-    const account = snapshot.docs[0].data();
+            blog => blog.category === category
 
-    if (account.isAdmin) {
-
-        const nav = document.querySelector(".nav-links");
-
-        nav.innerHTML += `
-            <a href="dashboard.html">
-                Dashboard
-            </a>
-        `;
+        );
 
     }
 
-});
+    renderBlogs(result);
+
+}
+
+/* ======================================================
+   COUNTER
+====================================================== */
+
+function animateCounters() {
+
+    const counters = document.querySelectorAll(".hero-stats h2");
+
+    counters.forEach(counter => {
+
+        const target = parseInt(
+
+            counter.innerText.replace(/\D/g, "")
+
+        );
+
+        let value = 0;
+
+        const speed = target / 60;
+
+        const update = () => {
+
+            value += speed;
+
+            if (value < target) {
+
+                counter.innerText = Math.floor(value) + "+";
+
+                requestAnimationFrame(update);
+
+            }
+
+            else {
+
+                counter.innerText = target + "+";
+
+            }
+
+        };
+
+        update();
+
+    });
+
+}
+
+/* ======================================================
+   SCROLL REVEAL
+====================================================== */
+
+function revealOnScroll() {
+
+    const elements = document.querySelectorAll(
+
+        ".feature-card,.tip-card,.blog-card,.gallery-item,.support-card"
+
+    );
+
+    const observer = new IntersectionObserver(entries => {
+
+        entries.forEach(entry => {
+
+            if (entry.isIntersecting) {
+
+                entry.target.classList.add("show");
+
+            }
+
+        });
+
+    }, {
+
+        threshold:0.15
+
+    });
+
+    elements.forEach(el => {
+
+        el.classList.add("hidden");
+
+        observer.observe(el);
+
+    });
+
+}

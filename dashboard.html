@@ -2,219 +2,270 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>GreenBit Dashboard</title>
+<meta charset="UTF-8">
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+<title>
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/dashboard.css">
+GreenLife Dashboard
+
+</title>
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+<link rel="stylesheet"
+href="css/dashboard.css">
+
 </head>
 
 <body>
 
-<div class="wrapper">
+<div class="dashboard">
 
-    <!-- Sidebar -->
+<!-- Sidebar -->
 
-    <aside class="sidebar">
+<aside class="sidebar">
 
-        <div class="logo">
+<div class="logo">
 
-            🌿 GreenBit CMS
+<i class="bi bi-globe-americas"></i>
 
-        </div>
+<span>
 
-        <ul>
+GreenLife
 
-            <li class="active">
-                <i class="bi bi-speedometer2"></i>
-                Dashboard
-            </li>
+</span>
 
-            <li>
-                <i class="bi bi-journal-text"></i>
-                Blogs
-            </li>
+</div>
 
-            <li>
-                <i class="bi bi-people"></i>
-                Users
-            </li>
+<nav>
 
-            <li>
-                <i class="bi bi-gear"></i>
-                Settings
-            </li>
+<a
+class="active"
+href="dashboard.html">
 
-        </ul>
+<i class="bi bi-speedometer2"></i>
 
-    </aside>
+Dashboard
 
-    <!-- Main -->
+</a>
 
-    <main class="content">
+<a
+href="dashboard.html#blogs">
 
-        <div class="topbar">
+<i class="bi bi-journal-richtext"></i>
 
-            <h2>
+Blogs
 
-                Dashboard
+</a>
 
-            </h2>
+<a
+href="index.html">
 
-            <button
-                class="btn btn-success"
-                id="newBlogBtn">
+<i class="bi bi-house"></i>
 
-                <i class="bi bi-plus-circle"></i>
+Home
 
-                New Blog
+</a>
 
-            </button>
+</nav>
 
-        </div>
+</aside>
 
-        <!-- Statistics -->
+<!-- Main -->
 
-        <div class="row g-4 mt-2">
+<main class="dashboard-main">
 
-            <div class="col-lg-4">
+<!-- Top Bar -->
 
-                <div class="stat-card">
+<header class="topbar">
 
-                    <h5>Total Blogs</h5>
+<div>
 
-                    <h2 id="totalBlogs">
+<h1>
 
-                        0
+Dashboard
 
-                    </h2>
+</h1>
 
-                </div>
+<p>
+
+Manage GreenLife content.
+
+</p>
+
+</div>
+
+<div
+id="userInfo"
+class="user-info">
+
+Loading...
+
+</div>
+
+</header>
+
+<!-- Statistics -->
+
+<section class="stats-grid">
+
+<div class="stat-card">
+
+<i class="bi bi-journal-text"></i>
+
+<h2
+id="totalBlogs">
+
+0
+
+</h2>
+
+<p>
+
+Published Blogs
+
+</p>
+
+</div>
+
+<div class="stat-card">
+
+<i class="bi bi-file-earmark"></i>
+
+<h2
+id="draftBlogs">
+
+0
+
+</h2>
+
+<p>
+
+Drafts
+
+</p>
+
+</div>
+
+<div class="stat-card">
+
+<i class="bi bi-people"></i>
+
+<h2
+id="totalUsers">
+
+0
+
+</h2>
+
+<p>
+
+Registered Users
+
+</p>
+
+</div>
+
+<div class="stat-card">
+
+<i class="bi bi-tags"></i>
+
+<h2
+id="totalCategories">
+
+0
+
+</h2>
+
+<p>
+
+Categories
+
+</p>
+
+</div>
+
+</section>
+
+<!-- Quick Actions -->
+
+<section class="quick-actions">
+
+<button
+id="newBlogBtn"
+class="primary-btn">
+
+<i class="bi bi-plus-circle"></i>
+
+New Blog
+
+</button>
+
+<button
+id="refreshBtn"
+class="secondary-btn">
+
+<i class="bi bi-arrow-clockwise"></i>
+
+Refresh
+
+</button>
+
+</section>
+
+        <!-- ========================================= -->
+        <!-- BLOG MANAGEMENT -->
+        <!-- ========================================= -->
+
+        <section class="blog-management" id="blogs">
+
+            <div class="section-header">
+
+                <h2>
+
+                    Blog Management
+
+                </h2>
+
+                <p>
+
+                    Create, edit and manage all published articles.
+
+                </p>
+
+            </div>
+            <div class="search-box mb-4">
+
+                <input
+                    id="searchInput"
+                    class="form-control"
+                    type="text"
+                    placeholder="Search blogs...">
 
             </div>
 
-            <div class="col-lg-4">
+            <div class="table-wrapper">
 
-                <div class="stat-card">
-
-                    <h5>Total Users</h5>
-
-                    <h2 id="totalUsers">
-
-                        0
-
-                    </h2>
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-4">
-
-                <div class="stat-card">
-
-                    <h5>Published Today</h5>
-
-                    <h2 id="todayBlogs">
-
-                        0
-
-                    </h2>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- Blog Form -->
-
-        <div class="card mt-5 shadow-sm" id="blogFormCard">
-
-            <div class="card-header">
-
-                Publish New Blog
-
-            </div>
-
-            <div class="card-body">
-
-                <div class="mb-3">
-
-                    <label>Title</label>
-
-                    <input
-                        id="title"
-                        class="form-control">
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label>Summary</label>
-
-                    <textarea
-                        id="summary"
-                        rows="3"
-                        class="form-control"></textarea>
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label>Image URL</label>
-
-                    <input
-                        id="imageURL"
-                        class="form-control">
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label>Content</label>
-
-                    <textarea
-                        id="content"
-                        rows="8"
-                        class="form-control"></textarea>
-
-                </div>
-
-                <button
-                    id="publishBtn"
-                    class="btn btn-success">
-
-                    Publish Blog
-
-                </button>
-
-            </div>
-
-        </div>
-
-        <!-- Blog Table -->
-
-        <div class="card shadow-sm mt-5">
-
-            <div class="card-header">
-
-                Published Blogs
-
-            </div>
-
-            <div class="table-responsive">
-
-                <table class="table table-hover align-middle">
+                <table class="table align-middle">
 
                     <thead>
 
@@ -224,21 +275,21 @@
 
                             <th>Title</th>
 
-                            <th>Author</th>
+                            <th>Category</th>
+
+                            <th>Status</th>
 
                             <th>Date</th>
 
-                            <th width="180">
-
-                                Actions
-
-                            </th>
+                            <th class="text-center">Actions</th>
 
                         </tr>
 
                     </thead>
 
-                    <tbody id="blogTable">
+                    <tbody id="blogTableBody">
+
+                        <!-- Loaded by dashboard.js -->
 
                     </tbody>
 
@@ -246,13 +297,324 @@
 
             </div>
 
-        </div>
+        </section>
 
     </main>
 
 </div>
 
-<script type="module" src="js/dashboard.js"></script>
+<!-- ========================================= -->
+<!-- BLOG MODAL -->
+<!-- ========================================= -->
+
+<div
+class="modal fade"
+id="blogModal"
+tabindex="-1">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5
+                class="modal-title"
+                id="modalTitle">
+
+                    New Blog
+
+                </h5>
+
+                <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal">
+
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <form id="blogForm">
+
+                    <input
+                    type="hidden"
+                    id="blogId">
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Title
+
+                        </label>
+
+                        <input
+                        type="text"
+                        class="form-control"
+                        id="blogTitleInput"
+                        required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Summary
+
+                        </label>
+
+                        <textarea
+                        class="form-control"
+                        id="blogSummaryInput"
+                        rows="3"
+                        required></textarea>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Content
+
+                        </label>
+
+                        <textarea
+                        class="form-control"
+                        id="blogContentInput"
+                        rows="10"
+                        required></textarea>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                Category
+
+                            </label>
+
+                            <input
+                            type="text"
+                            class="form-control"
+                            id="blogCategoryInput"
+                            placeholder="Climate, Recycling..."
+                            required>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                Image URL
+
+                            </label>
+
+                            <input
+                            type="url"
+                            class="form-control"
+                            id="blogImageInput"
+                            required>
+
+                            <div class="mt-3">
+
+                            <img
+
+                                id="imagePreview"
+
+                                src="https://placehold.co/600x350?text=Preview"
+
+                                class="img-fluid rounded shadow-sm"
+
+                                alt="Preview"
+
+                            >
+
+</div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-3">
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                Author
+
+                            </label>
+
+                            <input
+                            type="text"
+                            class="form-control"
+                            id="blogAuthorInput"
+                            required>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+
+                                Status
+
+                            </label>
+
+                            <select
+                            class="form-select"
+                            id="blogStatusInput">
+
+                                <option value="published">
+
+                                    Published
+
+                                </option>
+
+                                <option value="draft">
+
+                                    Draft
+
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+
+                    Cancel
+
+                </button>
+
+                <button
+                id="saveBlogBtn"
+                type="button"
+                class="btn btn-success">
+
+                    Save Blog
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ========================================= -->
+<!-- DELETE MODAL -->
+<!-- ========================================= -->
+
+<div
+class="modal fade"
+id="deleteModal"
+tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    Delete Blog
+
+                </h5>
+
+            </div>
+
+            <div class="modal-body">
+
+                Are you sure you want to permanently delete this article?
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+
+                    Cancel
+
+                </button>
+
+                <button
+                id="confirmDeleteBtn"
+                class="btn btn-danger">
+
+                    Delete
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ========================================= -->
+<!-- LOADING -->
+<!-- ========================================= -->
+
+<div
+id="loadingOverlay"
+class="loading-overlay d-none">
+
+    <div
+    class="spinner-border text-success"
+    role="status">
+
+    </div>
+
+</div>
+
+<!-- Bootstrap -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Navbar -->
+
+<script
+type="module"
+src="js/navbar.js"></script>
+
+<!-- Dashboard -->
+
+<script
+type="module"
+src="js/dashboard.js"></script>
+
+<div
+    id="toastContainer"
+    class="toast-container position-fixed bottom-0 end-0 p-3">
+</div>
 
 </body>
 
