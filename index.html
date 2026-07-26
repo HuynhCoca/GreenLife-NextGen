@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Environment Page</title>
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <!-- Your CSS -->
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body class="env-page">
+    <div class="env-shell">
+      <nav class="top-nav">
+        <a class="nav-brand" href="index.html">
+          <i class="bi bi-globe-americas"></i>
+          GreenLife
+        </a>
+        <div class="nav-links">
+          <a href="#tips">Eco Tips</a>
+          <a href="#impact">Impact</a>
+          <a href="#support">Support</a>
+          <a href="#blogs">Blog</a>
+        </div>
+        <div class="nav-actions" id="navActions">
+          <a
+            href="auth.html"
+            class="ghost-btn">
+
+            Login
+          </a>
+        </div>
+      </nav>
+
+      <header class="hero">
+
+          <div class="hero-left">
+
+              <p class="eyebrow">
+
+                  🌍 Earth-first living
+
+              </p>
+
+              <h1>
+
+                  Every Small Action
+                  Creates A Greener Future.
+
+              </h1>
+
+              <p class="hero-description">
+
+                  Join thousands of people making simple,
+                  sustainable choices that protect our forests,
+                  oceans, wildlife, and future generations.
+
+              </p>
+
+              <div class="hero-buttons">
+
+                  <a
+                      href="#blogs"
+                      class="primary-btn">
+
+                      Explore Articles
+
+                  </a>
+
+                  <a
+                      href="#support"
+                      class="secondary-btn">
+
+                      Join Us
+
+                  </a>
+
+              </div>
+
+          </div>
+
+          <div class="hero-right">
+
+              <img
+                  src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1400&q=80"
+                  alt="Forest">
+
+              <div class="floating-card">
+
+                  <h3>
+
+                      🌱 Green Impact
+
+                  </h3>
+
+                  <div class="floating-stat">
+
+                      <strong>
+
+                          1,200+
+
+                      </strong>
+
+                      <span>
+
+                          Trees Protected
+
+                      </span>
+
+                  </div>
+
+                  <div class="floating-stat">
+
+                      <strong>
+
+                          300+
+
+                      </strong>
+
+                      <span>
+
+                          Community Members
+
+                      </span>
+
+                  </div>
+
+              </div>
+
+          </div>
+
+      </header>
+
+      <section class="stats-grid">
+        <article class="info-card">
+          <h3>Clean energy</h3>
+          <p>Switching to efficient habits lowers power use and keeps the air cleaner.</p>
+        </article>
+        <article class="info-card">
+          <h3>Less waste</h3>
+          <p>Reuse, recycle, and choose durable items to cut down landfill waste.</p>
+        </article>
+        <article class="info-card">
+          <h3>Healthy spaces</h3>
+          <p>Green areas and cleaner surroundings create calmer, brighter communities.</p>
+        </article>
+      </section>
+
+      <section class="image-showcase">
+        <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1000&q=80" alt="Green forest landscape" />
+        <img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=1000&q=80" alt="Community garden and plants" />
+      </section>
+
+      <section class="content-grid">
+        <article class="content-card" id="tips">
+          <h3>Eco habits to try today</h3>
+          <ul>
+            <li>Carry a reusable bottle and bag.</li>
+            <li>Turn off lights and unplug devices.</li>
+            <li>Choose local and seasonal food when possible.</li>
+            <li>Plant one small tree or herb at home.</li>
+          </ul>
+        </article>
+
+        <article class="content-card" id="impact">
+          <h3>Impact snapshot</h3>
+          <div class="progress-row">
+            <span>Energy saved</span>
+            <div class="bar"><div class="fill fill-82"></div></div>
+          </div>
+          <div class="progress-row">
+            <span>Recycling effort</span>
+            <div class="bar"><div class="fill fill-74"></div></div>
+          </div>
+          <div class="progress-row">
+            <span>Water awareness</span>
+            <div class="bar"><div class="fill fill-90"></div></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="support-section" id="support">
+        <article class="support-hero-card">
+          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1400&q=80" alt="People working together in nature" />
+          <div class="support-content">
+            <p class="eyebrow">Get started</p>
+            <h2>Join the movement and help build a greener world</h2>
+            <ul class="support-list">
+              <li>Your support funds local clean-up projects and environmental education.</li>
+              <li>Every contribution helps families access healthier, greener spaces.</li>
+              <li>When more people join, small daily choices create lasting change.</li>
+            </ul>
+            <a class="primary-btn" href="support.html">Get started</a>
+          </div>
+        </article>
+      </section>
+
+      <section class="blog-section">
+          <h2>Latest from the blog</h2>
+
+          <div id="blogGrid" class="blog-grid"></div>
+      </section>
+
+      <footer class="page-footer">
+        <p>© 2026 GreenLife. Built for a cleaner and healthier future.</p>
+      </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/navbar.js"></script>
+    <script type="module" src="js/home.js"></script>
+  </body>
+</html>

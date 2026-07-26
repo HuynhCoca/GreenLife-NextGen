@@ -1,0 +1,151 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#f4f8f5;
+    font-family:Segoe UI,sans-serif;
+}
+
+.wrapper{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+
+    width:260px;
+
+    background:#1B4332;
+
+    color:white;
+
+    padding:30px 20px;
+
+}
+
+.logo{
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    margin-bottom:50px;
+
+}
+
+.sidebar ul{
+
+    list-style:none;
+
+}
+
+.sidebar li{
+
+    padding:15px;
+
+    border-radius:10px;
+
+    margin-bottom:10px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.sidebar li:hover{
+
+    background:#2E7D32;
+
+}
+
+.sidebar .active{
+
+    background:#2E7D32;
+
+}
+
+.content{
+
+    flex:1;
+
+    padding:40px;
+
+}
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.stat-card{
+
+    background:white;
+
+    border-radius:15px;
+
+    padding:25px;
+
+    text-align:center;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+
+}
+
+.stat-card h2{
+
+    margin-top:15px;
+
+    color:#2E7D32;
+
+    font-weight:bold;
+
+}
+
+.card{
+
+    border:none;
+
+    border-radius:15px;
+
+}
+
+.card-header{
+
+    background:#2E7D32;
+
+    color:white;
+
+    font-weight:bold;
+
+}
+
+table img{
+
+    width:80px;
+
+    border-radius:8px;
+
+}
+
+.btn-success{
+
+    background:#2E7D32;
+
+    border:none;
+
+}
+
+.btn-success:hover{
+
+    background:#245c26;
+
+}
