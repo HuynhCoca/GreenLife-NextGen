@@ -635,3 +635,35 @@ width:100%;
 }
 
 }
+
+.logout-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 9px 16px;
+
+    border: 1px solid #dfe8e2;
+    border-radius: 999px;
+
+    background: #f5faf6;
+    color: #2f6f45;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+.logout-btn:hover {
+    background: #e7f3ea;
+    border-color: #bcd9c4;
+    transform: translateY(-2px);
+}
+
+.logout-btn i {
+    font-size: 16px;
+}

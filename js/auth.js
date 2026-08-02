@@ -186,7 +186,14 @@ if (signupForm) {
 
                 isAdmin: false,
 
-                createdAt: serverTimestamp()
+                createdAt: serverTimestamp(),
+                
+                donations: [],
+
+                donationStats: {
+                    totalDonated: 0,
+                    totalTrees: 0
+                },
 
             });
 

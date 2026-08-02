@@ -72,12 +72,9 @@ onAuthStateChanged(auth, async (user) => {
             👋 ${account.name}
         </span>
 
-        <button
-            id="logoutBtn"
-            class="btn-login">
-
-            Logout
-
+        <button id="logoutBtn" class="logout-btn" type="button">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
         </button>
 
     `;

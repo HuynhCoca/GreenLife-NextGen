@@ -1,0 +1,999 @@
+/* ======================================================
+   ECO TIPS PAGE
+====================================================== */
+
+.eco-page {
+    min-height: 100vh;
+    background: #f4faf5;
+    color: #183b25;
+    font-family: "Poppins", sans-serif;
+}
+
+.eco-shell {
+    width: min(1200px, 92%);
+    margin: auto;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ======================================================
+   NAVBAR
+====================================================== */
+
+.top-nav {
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #1d6b38;
+    text-decoration: none;
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.nav-brand i {
+    font-size: 1.5rem;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.nav-links a {
+    color: #486451;
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #1d7a3f;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.ghost-btn {
+    padding: 9px 18px;
+    border: 1px solid #c9dfcf;
+    border-radius: 10px;
+    background: white;
+    color: #24643a;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.ghost-btn:hover {
+    background: #eaf6ed;
+}
+
+
+/* ======================================================
+   GENERAL
+====================================================== */
+
+.eyebrow {
+    margin-bottom: 10px;
+    color: #2c8b4d;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.primary-btn,
+.secondary-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 11px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.primary-btn {
+    border: none;
+    background: #278447;
+    color: white;
+}
+
+.primary-btn:hover {
+    background: #1f6f3b;
+    color: white;
+    transform: translateY(-2px);
+}
+
+
+/* ======================================================
+   HERO
+====================================================== */
+
+.eco-hero {
+    min-height: 540px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 70px;
+    padding: 65px 0 80px;
+}
+
+.eco-hero-content h1 {
+    max-width: 650px;
+    margin: 0 0 20px;
+    font-size: clamp(2.7rem, 5vw, 4.4rem);
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+}
+
+.eco-hero-content h1 span {
+    color: #2d914d;
+}
+
+.hero-description {
+    max-width: 600px;
+    margin-bottom: 30px;
+    color: #617668;
+    font-size: 1.02rem;
+    line-height: 1.8;
+}
+
+
+/* ======================================================
+   SEARCH
+====================================================== */
+
+.plant-search {
+    width: min(600px, 100%);
+    height: 58px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 16px;
+    border: 1px solid #d2e3d6;
+    border-radius: 15px;
+    background: white;
+    box-shadow: 0 10px 30px rgba(35, 89, 50, 0.08);
+}
+
+.plant-search > i {
+    color: #4b8e60;
+    font-size: 1.1rem;
+}
+
+.plant-search input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #183b25;
+    font: inherit;
+    font-size: 0.9rem;
+}
+
+.plant-search input::placeholder {
+    color: #9aa89e;
+}
+
+.clear-search {
+    display: none;
+    border: none;
+    background: transparent;
+    color: #829188;
+    cursor: pointer;
+}
+
+.clear-search.visible {
+    display: block;
+}
+
+.clear-search:hover {
+    color: #2d7d45;
+}
+
+
+/* ======================================================
+   HERO IMAGE
+====================================================== */
+
+.eco-hero-image {
+    height: 460px;
+    overflow: hidden;
+    border-radius: 28px;
+    box-shadow: 0 25px 60px rgba(35, 89, 50, 0.15);
+}
+
+.eco-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* ======================================================
+   ECO STATS
+====================================================== */
+
+.eco-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 100px;
+}
+
+.eco-stat {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 22px;
+    border: 1px solid #dfebe1;
+    border-radius: 17px;
+    background: white;
+    box-shadow: 0 8px 25px rgba(35, 89, 50, 0.05);
+}
+
+.stat-icon {
+    flex: 0 0 46px;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    background: #e7f5ea;
+    color: #298047;
+    font-size: 1.2rem;
+}
+
+.eco-stat strong {
+    display: block;
+    margin-bottom: 2px;
+    color: #236d3b;
+    font-size: 1.1rem;
+}
+
+.eco-stat span {
+    display: block;
+    color: #7a887f;
+    font-size: 0.73rem;
+}
+
+
+/* ======================================================
+   PLANT EXPLORER
+====================================================== */
+
+.plant-explorer {
+    padding-bottom: 100px;
+}
+
+.section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.section-heading h2 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: -0.03em;
+}
+
+.section-heading > p {
+    max-width: 470px;
+    margin: 0;
+    color: #718176;
+    line-height: 1.7;
+    font-size: 0.9rem;
+}
+
+
+/* ======================================================
+   CONTROLS
+====================================================== */
+
+.plant-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+.category-btn {
+    padding: 9px 16px;
+    border: 1px solid #d5e4d8;
+    border-radius: 10px;
+    background: white;
+    color: #55705e;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.category-btn:hover {
+    border-color: #77b58a;
+    color: #2b7c45;
+}
+
+.category-btn.active {
+    border-color: #2d8b4b;
+    background: #2d8b4b;
+    color: white;
+}
+
+.category-btn i {
+    margin-right: 4px;
+}
+
+
+/* ======================================================
+   SORT
+====================================================== */
+
+.plant-sort {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    white-space: nowrap;
+}
+
+.plant-sort label {
+    color: #758278;
+    font-size: 0.78rem;
+}
+
+.plant-sort select {
+    padding: 9px 12px;
+    border: 1px solid #d5e4d8;
+    border-radius: 9px;
+    outline: none;
+    background: white;
+    color: #45604d;
+    font: inherit;
+    font-size: 0.78rem;
+    cursor: pointer;
+}
+
+
+/* ======================================================
+   PLANT GRID
+====================================================== */
+
+.plant-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+
+/* ======================================================
+   PLANT CARD
+====================================================== */
+
+.plant-card {
+    overflow: hidden;
+    border: 1px solid #dfece2;
+    border-radius: 20px;
+    background: white;
+    box-shadow: 0 8px 28px rgba(35, 89, 50, 0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.plant-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 38px rgba(35, 89, 50, 0.11);
+}
+
+.plant-card-image {
+    position: relative;
+    height: 230px;
+    overflow: hidden;
+    background: #eaf4ec;
+}
+
+.plant-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+}
+
+.plant-card:hover .plant-card-image img {
+    transform: scale(1.04);
+}
+
+.plant-category {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.92);
+    color: #287743;
+    font-size: 0.7rem;
+    font-weight: 600;
+    backdrop-filter: blur(6px);
+}
+
+.plant-card-content {
+    padding: 23px;
+}
+
+.plant-card-content h3 {
+    margin: 0 0 5px;
+    color: #214d2e;
+    font-size: 1.2rem;
+}
+
+.plant-scientific-name {
+    margin-bottom: 13px;
+    color: #829087;
+    font-size: 0.78rem;
+    font-style: italic;
+}
+
+.plant-card-description {
+    display: -webkit-box;
+    overflow: hidden;
+    margin-bottom: 20px;
+    color: #6d7c72;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+.plant-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.plant-view-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 13px;
+    border: none;
+    border-radius: 9px;
+    background: #eaf6ed;
+    color: #287743;
+    font: inherit;
+    font-size: 0.76rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.plant-view-btn:hover {
+    background: #dcefe1;
+}
+
+.plant-view-btn i {
+    transition: transform 0.2s ease;
+}
+
+.plant-view-btn:hover i {
+    transform: translateX(3px);
+}
+
+
+/* ======================================================
+   LOADING
+====================================================== */
+
+.plant-loading {
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #718176;
+}
+
+.plant-loading .spinner-border {
+    width: 35px;
+    height: 35px;
+    margin-bottom: 15px;
+    color: #2d8b4b;
+}
+
+.plant-loading p {
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+
+/* ======================================================
+   EMPTY / ERROR STATE
+====================================================== */
+
+.plant-state {
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.plant-state[hidden] {
+    display: none;
+}
+
+.state-icon {
+    width: 65px;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    border-radius: 50%;
+    background: #e7f4e9;
+    color: #2d8748;
+    font-size: 1.5rem;
+}
+
+.plant-state h3 {
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+}
+
+.plant-state p {
+    max-width: 420px;
+    margin-bottom: 20px;
+    color: #78867c;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+
+/* ======================================================
+   SEEDS SECTION
+====================================================== */
+
+.seed-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    margin-bottom: 100px;
+    border-radius: 27px;
+    background: #e5f3e8;
+}
+
+.seed-image {
+    min-height: 500px;
+}
+
+.seed-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.seed-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px;
+}
+
+.seed-content h2 {
+    max-width: 520px;
+    margin-bottom: 18px;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+}
+
+.seed-content > p:not(.eyebrow) {
+    max-width: 520px;
+    margin-bottom: 30px;
+    color: #63766a;
+    line-height: 1.75;
+    font-size: 0.9rem;
+}
+
+
+/* ======================================================
+   SEED FEATURES
+====================================================== */
+
+.seed-features {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.seed-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.feature-icon {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: white;
+    color: #2c8748;
+}
+
+.seed-feature h3 {
+    margin: 0 0 3px;
+    font-size: 0.95rem;
+}
+
+.seed-feature p {
+    margin: 0;
+    color: #718176;
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
+
+
+/* ======================================================
+   CTA
+====================================================== */
+
+.eco-cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 80px;
+    padding: 50px;
+    border-radius: 25px;
+    background: #dcefe1;
+}
+
+.eco-cta h2 {
+    max-width: 650px;
+    margin-bottom: 10px;
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
+.eco-cta p:last-child {
+    margin: 0;
+    color: #66806d;
+}
+
+
+/* ======================================================
+   PLANT MODAL
+====================================================== */
+
+.plant-modal {
+    overflow: hidden;
+    border: none;
+    border-radius: 22px;
+}
+
+.plant-modal .modal-header {
+    min-height: 20px;
+    padding: 20px 25px 0;
+    border: none;
+}
+
+.plant-modal .modal-body {
+    padding: 0 30px 30px;
+}
+
+.plant-detail {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 30px;
+}
+
+.plant-detail-image {
+    height: 370px;
+    overflow: hidden;
+    border-radius: 18px;
+    background: #eaf4ec;
+}
+
+.plant-detail-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.plant-detail-content {
+    padding: 10px 0;
+}
+
+.plant-detail-category {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: #e8f5eb;
+    color: #287743;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.plant-detail-content h2 {
+    margin-bottom: 4px;
+    color: #204c2d;
+    font-size: 2rem;
+}
+
+.plant-detail-scientific {
+    margin-bottom: 20px;
+    color: #829087;
+    font-size: 0.82rem;
+    font-style: italic;
+}
+
+.plant-detail-description {
+    margin-bottom: 25px;
+    color: #68786e;
+    font-size: 0.85rem;
+    line-height: 1.8;
+}
+
+.plant-detail-facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.plant-fact {
+    padding: 13px;
+    border-radius: 11px;
+    background: #f2f8f3;
+}
+
+.plant-fact span {
+    display: block;
+    margin-bottom: 3px;
+    color: #849188;
+    font-size: 0.7rem;
+}
+
+.plant-fact strong {
+    color: #2a7040;
+    font-size: 0.8rem;
+}
+
+
+/* ======================================================
+   FOOTER
+====================================================== */
+
+.page-footer {
+    padding: 30px 0;
+    border-top: 1px solid #dce9df;
+    text-align: center;
+}
+
+.page-footer p {
+    margin: 0;
+    color: #819087;
+    font-size: 0.8rem;
+}
+
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media (max-width: 1000px) {
+
+    .nav-links {
+        display: none;
+    }
+
+    .eco-hero {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .eco-hero-image {
+        height: 380px;
+    }
+
+    .eco-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .plant-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .seed-section {
+        grid-template-columns: 1fr;
+    }
+
+    .seed-image {
+        min-height: 350px;
+    }
+
+    .plant-detail {
+        grid-template-columns: 1fr;
+    }
+
+    .plant-detail-image {
+        height: 300px;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .eco-shell {
+        width: min(94%, 1200px);
+    }
+
+    .top-nav {
+        min-height: 70px;
+    }
+
+    .eco-hero {
+        padding: 45px 0 60px;
+    }
+
+    .eco-hero-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .eco-hero-image {
+        height: 300px;
+        border-radius: 20px;
+    }
+
+    .eco-stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 70px;
+    }
+
+    .eco-stat {
+        padding: 17px 12px;
+    }
+
+    .stat-icon {
+        flex-basis: 38px;
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+
+    .section-heading {
+        display: block;
+    }
+
+    .section-heading > p {
+        margin-top: 15px;
+    }
+
+    .plant-controls {
+        display: block;
+    }
+
+    .plant-sort {
+        margin-top: 15px;
+    }
+
+    .plant-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .seed-content {
+        padding: 35px 25px;
+    }
+
+    .seed-image {
+        min-height: 280px;
+    }
+
+    .eco-cta {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 35px 25px;
+    }
+
+    .eco-cta h2 {
+        font-size: 1.6rem;
+    }
+
+    .plant-detail-facts {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 450px) {
+
+    .eco-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .category-filters {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .category-btn {
+        width: 100%;
+    }
+
+    .plant-search {
+        height: 52px;
+    }
+
+}
+
+.logout-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 9px 16px;
+
+    border: 1px solid #dfe8e2;
+    border-radius: 999px;
+
+    background: #f5faf6;
+    color: #2f6f45;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+.logout-btn:hover {
+    background: #e7f3ea;
+    border-color: #bcd9c4;
+    transform: translateY(-2px);
+}
+
+.logout-btn i {
+    font-size: 16px;
+}

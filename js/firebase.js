@@ -43,7 +43,9 @@ import {
     orderBy,
     limit,
 
-    serverTimestamp
+    serverTimestamp,
+
+    increment
 
 } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
@@ -98,6 +100,8 @@ export {
     limit,
 
     serverTimestamp,
+
+    increment,
 
     // Authentication
 

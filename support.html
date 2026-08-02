@@ -1,88 +1,1043 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Support GreenLife</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="support.css" />
-  </head>
-  <body class="env-page">
-    <div class="env-shell">
-      <nav class="top-nav">
-        <a class="nav-brand" href="index.html">GreenLife</a>
+
+
+    <!-- Google Font -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- Bootstrap -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- Bootstrap Icons -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    >
+
+
+    <!-- Support CSS -->
+
+    <link
+        rel="stylesheet"
+        href="css/support.css"
+    >
+
+</head>
+
+
+<body class="support-page">
+
+
+<div class="support-shell">
+
+
+    <!-- ==================================================
+         NAVBAR
+    =================================================== -->
+
+    <nav class="top-nav">
+
+        <a
+            href="index.html"
+            class="nav-brand"
+        >
+
+            <i class="bi bi-globe-americas"></i>
+
+            GreenLife
+
+        </a>
+
+
         <div class="nav-links">
-          <a href="index.html">Home</a>
-          <a href="#support">Support</a>
-          <div class="nav-actions">
-            <a id="authLink" class="ghost-btn nav-btn" href="auth.html">Login</a>
-          </div>
-        </div>
-      </nav>
 
-      <section class="support-page">
-        <div class="support-intro-banner">
-          <div class="support-intro-copy">
-            <p class="eyebrow">Earth-first living</p>
-            <h2>Support GreenLife</h2>
-            <p class="support-intro">
-              Every $1 helps plant 10 trees. Your contribution supports reforestation,
-              cleaner air, and healthier communities.
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="index.html#tips">
+                Eco Tips
+            </a>
+
+            <a href="index.html#impact">
+                Impact
+            </a>
+
+            <a href="blog.html">
+                Blog
+            </a>
+
+            <a
+                href="support.html"
+                class="active"
+            >
+                Support
+            </a>
+
+        </div>
+
+
+        <div
+            class="nav-actions"
+            id="navActions"
+        >
+
+            <a
+                href="auth.html"
+                class="ghost-btn"
+            >
+
+                Login
+
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ==================================================
+         HERO
+    =================================================== -->
+
+    <header class="support-hero">
+
+
+        <div class="support-hero-content">
+
+            <p class="eyebrow">
+
+                <i class="bi bi-tree"></i>
+
+                Make an impact
+
             </p>
-          </div>        
-        </div>
 
-        <div class="support-section-block impact-block">
-          <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1000&q=80" alt="Forest and fresh air" />
-          <div class="support-text">
-            <h3>X trees planted would achieve:</h3>
-            <ul class="support-list">
-              <li>Cleaner air for neighborhoods and schools</li>
-              <li>More shade and cooling during hotter months</li>
-              <li>Better habitats for birds, bees, and wildlife</li>
-              <li>Stronger community spaces and greener streets</li>
-            </ul>
-          </div>
-        </div>
 
-        <div class="support-section-block goals-block">
-          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=80" alt="Green landscape and nature" />
-          <div class="support-text">
-            <h3>Our goals</h3>
-            <ul class="support-list">
-              <li>Plant millions of trees across local communities</li>
-              <li>Educate people on sustainable living habits</li>
-              <li>Protect natural spaces for future generations</li>
-            </ul>
-          </div>
-        </div>
+            <h1>
 
-        <div class="support-section-block reason-block">
-          <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1000&q=80" alt="Lush green landscape" />
-          <div class="support-text">
-            <h3>Why you should support us</h3>
-            <p>
-              Your support turns small actions into lasting environmental impact.
-              By helping us grow, you help create healthier neighborhoods and a
-              brighter future for everyone.
+                Your $1 Can Help Plant
+                <span>5 Trees.</span>
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                Every donation helps support tree planting
+                and environmental restoration. Small
+                contributions can grow into a much bigger
+                impact when we work together.
+
             </p>
-          </div>
-        </div>
 
-        <div class="support-section-block payment-block">
-          <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1000&q=80" alt="People helping the environment" />
-          <div class="support-text">
-            <h3>Pay to help plant trees</h3>
-            <p>Choose your contribution:</p>
-            <div class="payment-options">
-              <button class="payment-btn" type="button">$1 = 10 trees</button>
-              <button class="payment-btn" type="button">$5 = 50 trees</button>
-              <button class="payment-btn" type="button">$10 = 100 trees</button>
+
+            <div class="hero-actions">
+
+                <a
+                    href="#donate"
+                    class="primary-btn"
+                >
+
+                    <i class="bi bi-heart-fill"></i>
+
+                    Donate Now
+
+                </a>
+
+
+                <a
+                    href="#impact"
+                    class="secondary-btn"
+                >
+
+                    See Your Impact
+
+                </a>
+
             </div>
-            <button class="primary-btn payment-submit" type="button">Subscribe now</button>
-          </div>
+
         </div>
-      </section>
+
+
+        <div class="support-hero-image">
+
+            <img
+                src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1200&q=80"
+                alt="Young trees growing in a green forest"
+            >
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ==================================================
+         IMPACT STATS
+    =================================================== -->
+
+    <section class="impact-stats">
+
+
+        <article class="impact-stat-card">
+
+            <div class="stat-icon">
+
+                <i class="bi bi-tree-fill"></i>
+
+            </div>
+
+            <strong>
+                1,200+
+            </strong>
+
+            <span>
+                Trees supported
+            </span>
+
+        </article>
+
+
+        <article class="impact-stat-card">
+
+            <div class="stat-icon">
+
+                <i class="bi bi-people-fill"></i>
+
+            </div>
+
+            <strong>
+                300+
+            </strong>
+
+            <span>
+                Community members
+            </span>
+
+        </article>
+
+
+        <article class="impact-stat-card">
+
+            <div class="stat-icon">
+
+                <i class="bi bi-heart-fill"></i>
+
+            </div>
+
+            <strong>
+                $2,400+
+            </strong>
+
+            <span>
+                Community donations
+            </span>
+
+        </article>
+
+
+        <article class="impact-stat-card">
+
+            <div class="stat-icon">
+
+                <i class="bi bi-globe-americas"></i>
+
+            </div>
+
+            <strong>
+                5x
+            </strong>
+
+            <span>
+                Trees per dollar
+            </span>
+
+        </article>
+
+    </section>
+
+
+
+    <!-- ==================================================
+         DONATION SECTION
+    =================================================== -->
+
+    <section
+        class="donation-section"
+        id="donate"
+    >
+
+
+        <div class="section-heading">
+
+            <p class="eyebrow">
+                Support the planet
+            </p>
+
+            <h2>
+                Choose your donation
+            </h2>
+
+            <p>
+                Every $1 donated represents 5 trees
+                supported through GreenLife.
+            </p>
+
+        </div>
+
+
+
+        <div class="donation-layout">
+
+
+            <!-- ==========================================
+                 DONATION OPTIONS
+            =========================================== -->
+
+            <div class="donation-card">
+
+
+                <div class="donation-card-header">
+
+                    <h3>
+                        How much would you like to give?
+                    </h3>
+
+                    <p>
+                        Choose an amount or enter your own.
+                    </p>
+
+                </div>
+
+
+                <div class="donation-options">
+
+
+                    <button
+                        type="button"
+                        class="donation-option"
+                        data-amount="1"
+                    >
+
+                        <strong>
+                            $1
+                        </strong>
+
+                        <span>
+                            5 trees
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="donation-option"
+                        data-amount="5"
+                    >
+
+                        <strong>
+                            $5
+                        </strong>
+
+                        <span>
+                            25 trees
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="donation-option"
+                        data-amount="10"
+                    >
+
+                        <strong>
+                            $10
+                        </strong>
+
+                        <span>
+                            50 trees
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="donation-option"
+                        data-amount="20"
+                    >
+
+                        <strong>
+                            $20
+                        </strong>
+
+                        <span>
+                            100 trees
+                        </span>
+
+                    </button>
+
+
+                </div>
+
+
+                <div class="custom-donation">
+
+                    <label for="customAmount">
+                        Custom amount
+                    </label>
+
+
+                    <div class="amount-input">
+
+                        <span>
+                            $
+                        </span>
+
+                        <input
+                            type="number"
+                            id="customAmount"
+                            min="1"
+                            step="1"
+                            placeholder="Enter amount"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="donation-impact">
+
+
+                    <div>
+
+                        <span>
+                            Your donation
+                        </span>
+
+                        <strong id="donationAmount">
+                            $1
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Trees supported
+                        </span>
+
+                        <strong id="treeAmount">
+                            5
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="donate-btn"
+                    id="donateBtn"
+                >
+
+                    <i class="bi bi-heart-fill"></i>
+
+                    Donate $1
+
+                </button>
+
+
+                <p class="demo-note">
+
+                    <i class="bi bi-info-circle"></i>
+
+                    This is a demonstration project.
+                    No real payment will be processed.
+
+                </p>
+
+            </div>
+
+
+
+            <!-- ==========================================
+                 IMPACT CARD
+            =========================================== -->
+
+            <div
+                class="donation-impact-card"
+                id="impact"
+            >
+
+                <div class="impact-image">
+
+                    <img
+                        src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1000&q=80"
+                        alt="Trees and sunlight in a forest"
+                    >
+
+                </div>
+
+
+                <div class="impact-content">
+
+                    <p class="eyebrow">
+                        Your impact
+                    </p>
+
+
+                    <h3>
+                        Small donations can grow into forests.
+                    </h3>
+
+
+                    <p>
+                        GreenLife turns every dollar donated
+                        into support for planting trees and
+                        restoring greener spaces.
+                    </p>
+
+
+                    <div class="impact-equation">
+
+
+                        <div class="equation-item">
+
+                            <i class="bi bi-currency-dollar"></i>
+
+                            <strong>
+                                $1
+                            </strong>
+
+                            <span>
+                                Donation
+                            </span>
+
+                        </div>
+
+
+                        <div class="equation-arrow">
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </div>
+
+
+                        <div class="equation-item">
+
+                            <i class="bi bi-tree-fill"></i>
+
+                            <strong>
+                                5
+                            </strong>
+
+                            <span>
+                                Trees
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==================================================
+         WHY DONATE
+    =================================================== -->
+
+    <section class="why-donate-section">
+
+
+        <div class="section-heading">
+
+            <p class="eyebrow">
+                Why your support matters
+            </p>
+
+            <h2>
+                Together, we can make a difference.
+            </h2>
+
+        </div>
+
+
+        <div class="reason-grid">
+
+
+            <article class="reason-card">
+
+                <div class="reason-icon">
+
+                    <i class="bi bi-tree-fill"></i>
+
+                </div>
+
+                <h3>
+                    Restore forests
+                </h3>
+
+                <p>
+                    Support tree planting and help create
+                    healthier green spaces for communities
+                    and wildlife.
+                </p>
+
+            </article>
+
+
+            <article class="reason-card">
+
+                <div class="reason-icon">
+
+                    <i class="bi bi-cloud-sun-fill"></i>
+
+                </div>
+
+                <h3>
+                    Protect our environment
+                </h3>
+
+                <p>
+                    More trees contribute to healthier
+                    ecosystems and a greener future.
+                </p>
+
+            </article>
+
+
+            <article class="reason-card">
+
+                <div class="reason-icon">
+
+                    <i class="bi bi-people-fill"></i>
+
+                </div>
+
+                <h3>
+                    Grow together
+                </h3>
+
+                <p>
+                    When many people contribute a little,
+                    those small actions can create a
+                    meaningful collective impact.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ==================================================
+         CTA
+    =================================================== -->
+
+    <section class="support-cta">
+
+
+        <div>
+
+            <p class="eyebrow">
+                Every contribution counts
+            </p>
+
+            <h2>
+                Ready to grow something good?
+            </h2>
+
+            <p>
+                Start with just $1 and support 5 trees.
+            </p>
+
+        </div>
+
+
+        <a
+            href="#donate"
+            class="primary-btn"
+        >
+
+            Donate Now
+
+            <i class="bi bi-arrow-right"></i>
+
+        </a>
+
+    </section>
+
+
+
+    <!-- ==================================================
+         FOOTER
+    =================================================== -->
+
+    <footer class="page-footer">
+
+        <p>
+            © 2026 GreenLife.
+            Built for a cleaner and healthier future.
+        </p>
+
+    </footer>
+
+
+</div>
+
+
+
+<!-- ====================================================
+     FAKE PAYMENT MODAL
+===================================================== -->
+
+<div
+    class="modal fade"
+    id="donationModal"
+    tabindex="-1"
+    aria-labelledby="donationModalLabel"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+
+            <div class="modal-header">
+
+                <div>
+
+                    <p class="eyebrow">
+                        Demo checkout
+                    </p>
+
+                    <h2
+                        class="modal-title"
+                        id="donationModalLabel"
+                    >
+                        Complete your donation
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+
+            </div>
+
+
+            <form id="donationForm">
+
+
+                <div class="modal-body">
+
+
+                    <div class="checkout-summary">
+
+                        <div>
+
+                            <span>
+                                Donation
+                            </span>
+
+                            <strong id="checkoutAmount">
+                                $1
+                            </strong>
+
+                        </div>
+
+
+                        <div>
+
+                            <span>
+                                Trees supported
+                            </span>
+
+                            <strong id="checkoutTrees">
+                                5
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="demo-payment-warning">
+
+                        <i class="bi bi-shield-check"></i>
+
+                        <span>
+                            Demo payment only.
+                            No real payment will be charged.
+                        </span>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="cardName">
+                            Name on card
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cardName"
+                            placeholder="Your name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="cardNumber">
+                            Card number
+                        </label>
+
+                        <input
+                            type="text"
+                            id="cardNumber"
+                            inputmode="numeric"
+                            maxlength="19"
+                            placeholder="1234 5678 9012 3456"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="payment-row">
+
+
+                        <div class="field">
+
+                            <label for="expiryDate">
+                                Expiry
+                            </label>
+
+                            <input
+                                type="text"
+                                id="expiryDate"
+                                inputmode="numeric"
+                                maxlength="5"
+                                placeholder="MM/YY"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="field">
+
+                            <label for="cvv">
+                                CVV
+                            </label>
+
+                            <input
+                                type="text"
+                                id="cvv"
+                                inputmode="numeric"
+                                maxlength="3"
+                                placeholder="123"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="secondary-btn"
+                        data-bs-dismiss="modal"
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="payment-btn"
+                    >
+
+                        <i class="bi bi-heart-fill"></i>
+
+                        Donate Now
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
     </div>
-  </body>
+
+</div>
+
+
+
+<!-- ====================================================
+     SUCCESS MODAL
+===================================================== -->
+
+<div
+    class="modal fade"
+    id="successModal"
+    tabindex="-1"
+    aria-labelledby="successModalLabel"
+    aria-hidden="true"
+>
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content success-modal">
+
+
+            <div class="success-icon">
+
+                <i class="bi bi-tree-fill"></i>
+
+            </div>
+
+
+            <h2 id="successModalLabel">
+                Thank you for your support!
+            </h2>
+
+
+            <p>
+
+                Your donation supports
+
+                <strong id="successTrees">
+                    5
+                </strong>
+
+                trees.
+
+            </p>
+
+
+            <p class="success-message">
+
+                Together, small actions can grow
+                into something much bigger.
+
+            </p>
+
+
+            <button
+                type="button"
+                class="primary-btn"
+                data-bs-dismiss="modal"
+            >
+
+                Continue
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==================================================
+     SCRIPTS
+================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+></script>
+
+
+<script
+    type="module"
+    src="js/authGuard.js"
+></script>
+
+
+<script
+    type="module"
+    src="js/navbar.js"
+></script>
+
+
+<script
+    type="module"
+    src="js/support.js"
+></script>
+
+
+</body>
+
 </html>
