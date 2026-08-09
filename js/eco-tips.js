@@ -1,39 +1,38 @@
-// ======================================================
-// ECO TIPS — PlantSolve Plant Encyclopedia
-// ======================================================
+/* ======================================================
+   ECO TIPS — GREENLIFE + PERENUAL
+====================================================== */
 
-const PLANTS_INDEX_URL =
-    "https://www.plantsolve.com/api/v1/plants/index.json";
+const API_KEY = "sk-ro4W6a782c7a3598419236";
 
-const PLANTS_API_URL =
-    "https://www.plantsolve.com/api/v1/plants";
+const API_BASE = "https://www.perenual.com/api/v2";
 
 
-// ======================================================
-// DOM
-// ======================================================
+/* ======================================================
+   DOM ELEMENTS
+====================================================== */
 
 const plantGrid = document.getElementById("plantGrid");
-const plantSearch = document.getElementById("plantSearch");
-const clearSearch = document.getElementById("clearSearch");
-const categoryFilters =
-    document.getElementById("categoryFilters");
-const plantSort = document.getElementById("plantSort");
 
-const plantLoading =
+const searchInput = document.getElementById("plantSearch");
+const clearSearch = document.getElementById("clearSearch");
+
+const categoryFilter =
+    document.getElementById("plantCategory");
+
+const sortFilter =
+    document.getElementById("plantSort");
+
+const loadingState =
     document.getElementById("plantLoading");
 
-const plantError =
-    document.getElementById("plantError");
-
-const plantEmpty =
+const emptyState =
     document.getElementById("plantEmpty");
 
-const retryPlants =
-    document.getElementById("retryPlants");
+const errorState =
+    document.getElementById("plantError");
 
-const plantCount =
-    document.getElementById("plantCount");
+const retryButton =
+    document.getElementById("retryPlants");
 
 const plantModal =
     document.getElementById("plantModal");
@@ -42,87 +41,155 @@ const plantModalContent =
     document.getElementById("plantModalContent");
 
 
-// ======================================================
-// STATE
-// ======================================================
+/* ======================================================
+   STATE
+====================================================== */
 
 let plants = [];
-let filteredPlants = [];
-let activeCategory = "all";
 
+let currentSearch = "";
 
-// ======================================================
-// INITIALIZE
-// ======================================================
+let currentCategory = "all";
+
+let currentSort = "default";
+
+let currentPage = 1;
+
+const PLANTS_PER_PAGE = 9;
+
+let totalPages = 1;
+
+/* ======================================================
+   INITIALIZE
+====================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    setupSearch();
+    initializeSearch();
 
-    setupCategories();
+    initializeFilters();
 
-    setupSorting();
-
-    setupRetry();
+    initializeRetry();
 
     loadPlants();
 
 });
 
 
-// ======================================================
-// LOAD PLANT INDEX
-// ======================================================
+/* ======================================================
+   LOAD PLANTS FROM PERENUAL
+====================================================== */
 
-async function loadPlants() {
+async function loadPlants(
+    search = "",
+    page = 1
+) {
 
     showLoading();
 
+    currentPage = page;
+
     try {
 
+        let url =
+            `${API_BASE}/species-list` +
+            `?key=${API_KEY}` +
+            `&page=${page}`;
+
+
+        /*
+           Search is optional.
+        */
+
+        if (search) {
+
+            url +=
+                `&q=${encodeURIComponent(search)}`;
+
+        }
+
+
         const response =
-            await fetch(PLANTS_INDEX_URL);
+            await fetch(url);
 
 
         if (!response.ok) {
 
             throw new Error(
-                `PlantSolve returned ${response.status}`
+                `Perenual API error: ${response.status}`
             );
 
         }
 
 
-        const data =
+        const result =
             await response.json();
 
 
+        /*
+           Only keep the plants returned
+           for THIS page.
+        */
+
         plants =
-            normalizePlantIndex(data);
+            Array.isArray(result.data)
+                ? result.data
+                : [];
 
 
-        filteredPlants =
-            [...plants];
+        /*
+           Get pagination information
+           from Perenual.
+        */
+
+        const total =
+            result.total ||
+            result.to ||
+            plants.length;
 
 
-        if (plantCount) {
+        totalPages =
+            Math.max(
+                1,
+                Math.ceil(
+                    total / PLANTS_PER_PAGE
+                )
+            );
 
-            plantCount.textContent =
-                plants.length;
 
-        }
+        /*
+           Add GreenLife category.
+        */
+
+        plants =
+            plants.map(plant => ({
+
+                ...plant,
+
+                greenlifeCategory:
+                    getPlantCategory(plant)
+
+            }));
 
 
-        renderPlants();
+        /*
+           Get detailed information ONLY
+           for these 9 plants.
+        */
 
-        hideLoading();
+
+
+        applyFilters();
+
+
+        renderPagination();
 
     }
 
     catch (error) {
 
         console.error(
-            "PlantSolve error:",
+            "Failed to load plants:",
             error
         );
 
@@ -133,391 +200,747 @@ async function loadPlants() {
 }
 
 
-// ======================================================
-// NORMALIZE PLANT INDEX
-// ======================================================
+/* ======================================================
+   SEARCH
+====================================================== */
 
-function normalizePlantIndex(data) {
+function initializeSearch() {
+
+    if (!searchInput) return;
+
 
     /*
-     * PlantSolve's index is used only for
-     * discovering plants.
-     *
-     * We keep this conversion isolated so
-     * changes to the API format don't affect
-     * the rest of the application.
-     */
+       Search ONLY when Enter is pressed.
+       This prevents unnecessary API calls.
+    */
 
-    const source =
-        Array.isArray(data)
-            ? data
-            : data.plants ||
-              data.results ||
-              data.data ||
-              [];
+    searchInput.addEventListener(
+        "keydown",
+        event => {
+
+            if (event.key !== "Enter") {
+                return;
+            }
 
 
-    return source.map((plant, index) => {
-
-        return {
-
-            id:
-                plant.id ||
-                plant.slug ||
-                plant.name ||
-                `plant-${index}`,
-
-            slug:
-                plant.slug ||
-                createSlug(
-                    plant.name ||
-                    plant.commonName ||
-                    `plant-${index}`
-                ),
-
-            name:
-                plant.name ||
-                plant.commonName ||
-                plant.common_name ||
-                "Unknown plant",
-
-            scientificName:
-                plant.scientificName ||
-                plant.scientific_name ||
-                plant.scientific ||
-                "",
-
-            image:
-                plant.image ||
-                plant.imageUrl ||
-                plant.imageURL ||
-                plant.photo ||
-                "",
-
-            category:
-                normalizeCategory(
-                    plant.category ||
-                    plant.type ||
-                    plant.plantType
-                ),
-
-            description:
-                plant.description ||
-                plant.summary ||
-                ""
-
-        };
-
-    });
-
-}
+            event.preventDefault();
 
 
-// ======================================================
-// LOAD INDIVIDUAL PLANT
-// ======================================================
-
-async function loadPlantDetails(slug) {
-
-    try {
-
-        const response =
-            await fetch(
-                `${PLANTS_API_URL}/${encodeURIComponent(slug)}.json`
-            );
+            const keyword =
+                searchInput.value.trim();
 
 
-        if (!response.ok) {
+            currentSearch = keyword;
 
-            throw new Error(
-                `PlantSolve returned ${response.status}`
-            );
+
+            loadPlants(keyword, 1);
 
         }
+    );
 
-
-        const data =
-            await response.json();
-
-
-        openPlantDetails(
-            normalizePlantDetails(data)
-        );
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Unable to load plant details:",
-            error
-        );
-
-        plantModalContent.innerHTML = `
-
-            <div class="plant-state">
-
-                <div class="state-icon">
-
-                    <i class="bi bi-cloud-slash"></i>
-
-                </div>
-
-                <h3>
-                    Plant information unavailable
-                </h3>
-
-                <p>
-                    We couldn't load the details
-                    for this plant right now.
-                </p>
-
-            </div>
-
-        `;
-
-
-        showModal();
-
-    }
-
-}
-
-
-// ======================================================
-// NORMALIZE DETAILS
-// ======================================================
-
-function normalizePlantDetails(data) {
 
     /*
-     * Keep the API-specific mapping here.
-     */
+       Clear search
+    */
 
-    const plant =
-        data.plant ||
-        data.data ||
-        data;
+    if (clearSearch) {
 
+        clearSearch.addEventListener(
+            "click",
+            () => {
 
-    return {
+                searchInput.value = "";
 
-        name:
-            plant.name ||
-            plant.commonName ||
-            plant.common_name ||
-            "Unknown plant",
+                currentSearch = "";
 
-        scientificName:
-            plant.scientificName ||
-            plant.scientific_name ||
-            plant.scientific ||
-            "",
+                loadPlants("", 1);
 
-        image:
-            plant.image ||
-            plant.imageUrl ||
-            plant.imageURL ||
-            plant.photo ||
-            "",
+            }
+        );
 
-        category:
-            normalizeCategory(
-                plant.category ||
-                plant.type ||
-                plant.plantType
-            ),
-
-        description:
-            plant.description ||
-            plant.summary ||
-            plant.about ||
-            "No description available.",
-
-        family:
-            plant.family ||
-            "Not available",
-
-        origin:
-            plant.origin ||
-            plant.nativeRegion ||
-            plant.native_region ||
-            "Not available",
-
-        growth:
-            plant.growth ||
-            plant.growthHabit ||
-            plant.growth_habit ||
-            "Not available",
-
-        sunlight:
-            plant.sunlight ||
-            plant.light ||
-            "Not available",
-
-        water:
-            plant.water ||
-            plant.waterNeeds ||
-            plant.water_needs ||
-            "Not available"
-
-    };
+    }
 
 }
 
 
-// ======================================================
-// RENDER PLANTS
-// ======================================================
+/* ======================================================
+   FILTERS
+====================================================== */
 
-function renderPlants() {
+function initializeFilters() {
 
-    hideStates();
+    /* ================================================
+       CATEGORY BUTTONS
+    ================================================ */
+
+    const categoryFilters =
+        document.getElementById("categoryFilters");
+
+    if (categoryFilters) {
+
+        const buttons =
+            categoryFilters.querySelectorAll(
+                ".category-btn"
+            );
+
+        buttons.forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    /* Remove active from every button */
+
+                    buttons.forEach(btn => {
+
+                        btn.classList.remove(
+                            "active"
+                        );
+
+                    });
 
 
-    if (!filteredPlants.length) {
+                    /* Activate clicked button */
 
-        plantEmpty.hidden = false;
+                    button.classList.add(
+                        "active"
+                    );
 
+
+                    /* Get category from data-category */
+
+                    currentCategory =
+                        button.dataset.category ||
+                        "all";
+
+
+                    /* Apply filter */
+
+                    applyFilters();
+
+                }
+            );
+
+        });
+
+    }
+
+
+    /* ================================================
+       SORT DROPDOWN
+    ================================================ */
+
+    if (sortFilter) {
+
+        sortFilter.addEventListener(
+            "change",
+            () => {
+
+                currentSort =
+                    sortFilter.value;
+
+                applyFilters();
+
+            }
+        );
+
+    }
+
+}
+
+
+/* ======================================================
+   GREENLIFE CATEGORY SYSTEM
+====================================================== */
+
+function getPlantCategory(plant) {
+
+    const name =
+        getSearchablePlantText(plant);
+
+
+    /* HOUSEPLANTS → we'll treat indoor plants
+       as "shrub" for now only if your UI doesn't
+       have a houseplant button. */
+
+    if (plant.indoor === true) {
+
+        return "shrub";
+
+    }
+
+
+    /* SUCCULENTS */
+
+    const succulentKeywords = [
+
+        "succulent",
+        "cactus",
+        "aloe",
+        "haworthia",
+        "echeveria",
+        "sedum",
+        "crassula",
+        "kalanchoe"
+
+    ];
+
+
+    if (
+        containsKeyword(
+            name,
+            succulentKeywords
+        )
+    ) {
+
+        return "shrub";
+
+    }
+
+
+    /* HERBS */
+
+    const herbKeywords = [
+
+        "basil",
+        "mint",
+        "thyme",
+        "rosemary",
+        "sage",
+        "oregano",
+        "parsley",
+        "cilantro",
+        "coriander",
+        "chive",
+        "dill",
+        "lavender",
+        "lemongrass"
+
+    ];
+
+
+    if (
+        containsKeyword(
+            name,
+            herbKeywords
+        )
+    ) {
+
+        return "herb";
+
+    }
+
+
+    /* FLOWERS */
+
+    const flowerKeywords = [
+
+        "rose",
+        "orchid",
+        "tulip",
+        "daisy",
+        "lily",
+        "hibiscus",
+        "sunflower",
+        "jasmine",
+        "marigold",
+        "petunia",
+        "violet",
+        "dahlia",
+        "chrysanthemum",
+        "carnation",
+        "begonia",
+        "geranium",
+        "hydrangea",
+        "magnolia",
+        "peony"
+
+    ];
+
+
+    if (
+        containsKeyword(
+            name,
+            flowerKeywords
+        )
+    ) {
+
+        return "flower";
+
+    }
+
+
+    /* TREES */
+
+    const treeKeywords = [
+
+        "oak",
+        "pine",
+        "maple",
+        "cedar",
+        "spruce",
+        "fir",
+        "birch",
+        "willow",
+        "elm",
+        "palm",
+        "sequoia",
+        "redwood",
+        "eucalyptus",
+        "acacia",
+        "apple tree",
+        "cherry tree",
+        "mango tree",
+        "lemon tree",
+        "orange tree",
+        "olive tree",
+        "fig tree",
+        "peach tree",
+        "pear tree"
+
+    ];
+
+
+    if (
+        containsKeyword(
+            name,
+            treeKeywords
+        )
+    ) {
+
+        return "tree";
+
+    }
+
+
+    /* Default */
+
+    return "other";
+
+}
+
+
+/* ======================================================
+   SEARCHABLE PLANT TEXT
+====================================================== */
+
+function getSearchablePlantText(plant) {
+
+    const commonName =
+        plant.common_name || "";
+
+
+    const scientificName =
+        Array.isArray(
+            plant.scientific_name
+        )
+            ? plant.scientific_name.join(" ")
+            : plant.scientific_name || "";
+
+
+    const family =
+        plant.family || "";
+
+
+    return `
+        ${commonName}
+        ${scientificName}
+        ${family}
+    `.toLowerCase();
+
+}
+
+
+/* ======================================================
+   KEYWORD CHECK
+====================================================== */
+
+function containsKeyword(
+    text,
+    keywords
+) {
+
+    return keywords.some(
+        keyword =>
+            text.includes(
+                keyword.toLowerCase()
+            )
+    );
+
+}
+
+
+/* ======================================================
+   APPLY LOCAL FILTERS
+====================================================== */
+
+function applyFilters() {
+
+    let result = [...plants];
+
+
+    /* ================================================
+       CATEGORY FILTER
+    ================================================ */
+
+    if (
+        currentCategory &&
+        currentCategory !== "all"
+    ) {
+
+        result = result.filter(
+            plant =>
+                plant.greenlifeCategory ===
+                currentCategory
+        );
+
+    }
+
+
+    /* ================================================
+       SORT
+    ================================================ */
+
+    if (currentSort === "name") {
+
+        result.sort(
+            (a, b) =>
+                getPlantName(a)
+                    .localeCompare(
+                        getPlantName(b)
+                    )
+        );
+
+    }
+
+    else if (currentSort === "name-desc") {
+
+        result.sort(
+            (a, b) =>
+                getPlantName(b)
+                    .localeCompare(
+                        getPlantName(a)
+                    )
+        );
+
+    }
+
+
+    renderPlants(result);
+
+}
+
+/* ======================================================
+   RENDER PLANTS
+====================================================== */
+
+function renderPlants(data) {
+
+    hideLoading();
+
+    hideError();
+
+
+    if (!plantGrid) {
         return;
-
     }
 
 
     plantGrid.innerHTML = "";
 
 
-    filteredPlants.forEach(plant => {
+    if (!data.length) {
 
-        plantGrid.appendChild(
-            createPlantCard(plant)
-        );
+        showEmpty();
+
+        return;
+
+    }
+
+
+    hideEmpty();
+
+
+    data.forEach(plant => {
+
+        const card =
+            createPlantCard(plant);
+
+
+        plantGrid.appendChild(card);
 
     });
 
 }
 
+function renderPagination() {
 
-// ======================================================
-// CREATE CARD
-// ======================================================
+    const pagination =
+        document.getElementById(
+            "plantPagination"
+        );
+
+
+    if (!pagination) {
+        return;
+    }
+
+
+    pagination.innerHTML = "";
+
+
+    /*
+       Don't show pagination when
+       there is only one page.
+    */
+
+    if (totalPages <= 1) {
+
+        return;
+
+    }
+
+
+    /* ================================================
+       PREVIOUS BUTTON
+    ================================================ */
+
+    const previousButton =
+        document.createElement("button");
+
+
+    previousButton.className =
+        "pagination-btn";
+
+
+    previousButton.innerHTML =
+        `<i class="bi bi-chevron-left"></i>`;
+
+
+    previousButton.disabled =
+        currentPage === 1;
+
+
+    previousButton.addEventListener(
+        "click",
+        () => {
+
+            if (currentPage > 1) {
+
+                loadPlants(
+                    currentSearch,
+                    currentPage - 1
+                );
+
+            }
+
+        }
+    );
+
+
+    pagination.appendChild(
+        previousButton
+    );
+
+
+    /* ================================================
+       PAGE NUMBERS
+    ================================================ */
+
+    for (
+        let page = 1;
+        page <= totalPages;
+        page++
+    ) {
+
+        const pageButton =
+            document.createElement("button");
+
+
+        pageButton.className =
+            "pagination-btn";
+
+
+        pageButton.textContent =
+            page;
+
+
+        if (page === currentPage) {
+
+            pageButton.classList.add(
+                "active"
+            );
+
+        }
+
+
+        pageButton.addEventListener(
+            "click",
+            () => {
+
+                if (
+                    page !== currentPage
+                ) {
+
+                    loadPlants(
+                        currentSearch,
+                        page
+                    );
+
+                }
+
+            }
+        );
+
+
+        pagination.appendChild(
+            pageButton
+        );
+
+    }
+
+
+    /* ================================================
+       NEXT BUTTON
+    ================================================ */
+
+    const nextButton =
+        document.createElement("button");
+
+
+    nextButton.className =
+        "pagination-btn";
+
+
+    nextButton.innerHTML =
+        `<i class="bi bi-chevron-right"></i>`;
+
+
+    nextButton.disabled =
+        currentPage === totalPages;
+
+
+    nextButton.addEventListener(
+        "click",
+        () => {
+
+            if (
+                currentPage < totalPages
+            ) {
+
+                loadPlants(
+                    currentSearch,
+                    currentPage + 1
+                );
+
+            }
+
+        }
+    );
+
+
+    pagination.appendChild(
+        nextButton
+    );
+
+}
+/* ======================================================
+   CREATE PLANT CARD
+====================================================== */
 
 function createPlantCard(plant) {
 
-    const article =
+    const card =
         document.createElement("article");
 
 
-    article.className =
-        "plant-card";
+    card.className = "plant-card";
 
 
-    article.innerHTML = `
+    const name =
+        getPlantName(plant);
 
-        <div class="plant-card-image">
 
-            ${
-                plant.image
+    const scientificName =
+        getScientificName(plant);
 
-                ? `
-                    <img
-                        src="${escapeHTML(plant.image)}"
-                        alt="${escapeHTML(plant.name)}"
-                        loading="lazy"
-                    >
-                `
 
-                : `
-                    <div class="plant-image-placeholder">
+    const image =
+        getPlantImage(plant);
 
-                        <i class="bi bi-tree"></i>
 
-                    </div>
-                `
-            }
+    const category =
+        getCategoryLabel(
+            plant.greenlifeCategory
+        );
 
-            <span class="plant-category">
+    const categoryTip =
+        getCategoryTip(category);
 
-                ${formatCategory(plant.category)}
 
-            </span>
+    card.innerHTML = `
+
+        <div class="plant-image-wrapper">
+
+            <img
+                src="${escapeHTML(image)}"
+                alt="${escapeHTML(name)}"
+                loading="lazy"
+            >
 
         </div>
 
 
         <div class="plant-card-content">
 
+
+            <span class="plant-category">
+
+                ${escapeHTML(category)}
+
+            </span>
+
+
             <h3>
-                ${escapeHTML(plant.name)}
+
+                ${escapeHTML(name)}
+
             </h3>
 
 
-            ${
-                plant.scientificName
+            <p class="scientific-name">
 
-                ? `
-                    <p class="plant-scientific-name">
+                ${escapeHTML(scientificName)}
 
-                        ${escapeHTML(
-                            plant.scientificName
-                        )}
-
-                    </p>
-                `
-
-                : ""
-            }
+            </p>
 
 
-            ${
-                plant.description
+            <div class="plant-quick-info">
 
-                ? `
-                    <p class="plant-card-description">
-
-                        ${escapeHTML(
-                            plant.description
-                        )}
-
-                    </p>
-                `
-
-                : `
-                    <p class="plant-card-description">
-
-                        Explore this plant to learn
-                        more about it.
-
-                    </p>
-                `
-            }
-
-
-            <div class="plant-card-footer">
-
-                <span class="plant-type">
+                <div class="quick-info-item">
 
                     <i class="bi bi-leaf"></i>
 
-                    ${formatCategory(
-                        plant.category
-                    )}
+                    <span>
+                        ${escapeHTML(categoryTip)}
+                    </span>
 
-                </span>
-
-
-                <button
-                    type="button"
-                    class="plant-view-btn"
-                >
-
-                    View Details
-
-                    <i class="bi bi-arrow-right"></i>
-
-                </button>
+                </div>
 
             </div>
+
+
+            <button
+                type="button"
+                class="view-plant-btn"
+            >
+
+                View Care Guide
+
+                <i class="bi bi-arrow-right"></i>
+
+            </button>
+
 
         </div>
 
@@ -525,8 +948,8 @@ function createPlantCard(plant) {
 
 
     const button =
-        article.querySelector(
-            ".plant-view-btn"
+        card.querySelector(
+            ".view-plant-btn"
         );
 
 
@@ -535,560 +958,760 @@ function createPlantCard(plant) {
         () => {
 
             loadPlantDetails(
-                plant.slug
+                plant.id
             );
 
         }
     );
 
 
-    return article;
+    return card;
 
 }
 
 
-// ======================================================
-// PLANT DETAILS MODAL
-// ======================================================
+/* ======================================================
+   LOAD PLANT DETAILS
+====================================================== */
 
-function openPlantDetails(plant) {
+async function loadPlantDetails(id) {
+
+    try {
+
+        if (plantModalContent) {
+
+            plantModalContent.innerHTML = `
+
+                <div class="plant-loading-modal">
+
+                    <div
+                        class="spinner-border"
+                        role="status"
+                    ></div>
+
+                    <p>
+                        Loading care guide...
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+
+        openModal();
+
+
+        const url =
+            `${API_BASE}/species/details/${id}?key=${API_KEY}`;
+
+
+        const response =
+            await fetch(url);
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Details API error: ${response.status}`
+            );
+
+        }
+
+
+        const plant =
+            await response.json();
+
+
+        renderPlantDetails(plant);
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Failed to load plant details:",
+            error
+        );
+
+
+        if (plantModalContent) {
+
+            plantModalContent.innerHTML = `
+
+                <div class="plant-error-content">
+
+                    <i class="bi bi-exclamation-circle"></i>
+
+                    <h3>
+                        Unable to load care guide
+                    </h3>
+
+                    <p>
+                        Please try again later.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+}
+
+
+/* ======================================================
+   RENDER CARE GUIDE
+====================================================== */
+
+function renderPlantDetails(plant) {
+
+    if (!plantModalContent) {
+        return;
+    }
+
+
+    const name =
+        getPlantName(plant);
+
+
+    const scientificName =
+        getScientificName(plant);
+
+
+    const image =
+        getPlantImage(plant);
+
+
+    const category =
+        getCategoryLabel(
+            getPlantCategory(plant)
+        );
+
+
+    const sunlight =
+        formatValue(
+            plant.sunlight
+        );
+
+
+    const watering =
+        plant.watering ||
+        "Not available";
+
+
+    const cycle =
+        plant.cycle ||
+        "Not available";
+
+
+    const origin =
+        formatValue(
+            plant.origin
+        );
+
+
+    const family =
+        plant.family ||
+        "Not available";
+
+
+    const indoor =
+        plant.indoor === true
+            ? "Yes"
+            : plant.indoor === false
+                ? "No"
+                : "Unknown";
+
+
+    const tips =
+        generateCareTips(plant);
+
 
     plantModalContent.innerHTML = `
 
-        <div class="plant-detail">
+        <div class="plant-detail-layout">
+
 
             <div class="plant-detail-image">
 
-                ${
-                    plant.image
-
-                    ? `
-                        <img
-                            src="${escapeHTML(
-                                plant.image
-                            )}"
-                            alt="${escapeHTML(
-                                plant.name
-                            )}"
-                        >
-                    `
-
-                    : `
-                        <div
-                            class="plant-image-placeholder"
-                        >
-
-                            <i class="bi bi-tree"></i>
-
-                        </div>
-                    `
-                }
+                <img
+                    src="${escapeHTML(image)}"
+                    alt="${escapeHTML(name)}"
+                >
 
             </div>
 
 
-            <div class="plant-detail-content">
+            <div class="plant-detail-info">
 
-                <span class="plant-detail-category">
 
-                    ${formatCategory(
-                        plant.category
-                    )}
+                <span class="plant-category">
+
+                    ${escapeHTML(category)}
 
                 </span>
 
 
-                <h2 id="plantModalLabel">
+                <h2>
 
-                    ${escapeHTML(
-                        plant.name
-                    )}
+                    ${escapeHTML(name)}
 
                 </h2>
 
 
-                ${
-                    plant.scientificName
+                <p class="scientific-name">
 
-                    ? `
-                        <p
-                            class="plant-detail-scientific"
-                        >
-
-                            ${escapeHTML(
-                                plant.scientificName
-                            )}
-
-                        </p>
-                    `
-
-                    : ""
-                }
-
-
-                <p class="plant-detail-description">
-
-                    ${escapeHTML(
-                        plant.description
-                    )}
+                    ${escapeHTML(scientificName)}
 
                 </p>
 
 
-                <div class="plant-detail-facts">
+                <div class="detail-grid">
 
-                    ${createFact(
-                        "Family",
-                        plant.family
-                    )}
 
-                    ${createFact(
-                        "Origin",
-                        plant.origin
-                    )}
+                    <div class="detail-item">
 
-                    ${createFact(
-                        "Growth",
-                        plant.growth
-                    )}
+                        <i class="bi bi-droplet"></i>
 
-                    ${createFact(
-                        "Sunlight",
-                        plant.sunlight
-                    )}
+                        <span>Watering</span>
 
-                    ${createFact(
-                        "Water",
-                        plant.water
-                    )}
+                        <strong>
+                            ${escapeHTML(watering)}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <i class="bi bi-sun"></i>
+
+                        <span>Sunlight</span>
+
+                        <strong>
+                            ${escapeHTML(sunlight)}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <i class="bi bi-house"></i>
+
+                        <span>Indoor</span>
+
+                        <strong>
+                            ${indoor}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <i class="bi bi-arrow-repeat"></i>
+
+                        <span>Cycle</span>
+
+                        <strong>
+                            ${escapeHTML(cycle)}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <i class="bi bi-diagram-3"></i>
+
+                        <span>Family</span>
+
+                        <strong>
+                            ${escapeHTML(family)}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-item">
+
+                        <i class="bi bi-globe"></i>
+
+                        <span>Origin</span>
+
+                        <strong>
+                            ${escapeHTML(origin)}
+                        </strong>
+
+                    </div>
+
 
                 </div>
+
+
+                ${
+                    plant.description
+                        ? `
+
+                            <div class="plant-description">
+
+                                <h3>
+                                    About this plant
+                                </h3>
+
+                                <p>
+                                    ${escapeHTML(
+                                        plant.description
+                                    )}
+                                </p>
+
+                            </div>
+
+                        `
+                        : ""
+                }
+
+
+                <div class="greenlife-care-tips">
+
+                    <h3>
+
+                        <i class="bi bi-leaf"></i>
+
+                        GreenLife Care Tips
+
+                    </h3>
+
+
+                    <ul>
+
+                        ${tips
+                            .map(
+                                tip =>
+                                    `<li>${escapeHTML(tip)}</li>`
+                            )
+                            .join("")
+                        }
+
+                    </ul>
+
+                </div>
+
 
             </div>
 
         </div>
 
-
-        <div class="plantsolve-credit">
-
-            Plant information provided by
-            <a
-                href="https://www.plantsolve.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                PlantSolve
-            </a>
-
-        </div>
-
     `;
-
-
-    showModal();
 
 }
 
 
-// ======================================================
-// FACT
-// ======================================================
+/* ======================================================
+   GENERATE CARE TIPS
+====================================================== */
 
-function createFact(label, value) {
+function generateCareTips(plant) {
 
-    if (!value) {
-        return "";
+    const tips = [];
+
+
+    /*
+       Watering
+    */
+
+    if (plant.watering) {
+
+        tips.push(
+            `Water according to its ${plant.watering.toLowerCase()} watering needs.`
+        );
+
+    }
+
+    else {
+
+        tips.push(
+            "Check the soil before watering and avoid keeping the soil constantly waterlogged."
+        );
+
     }
 
 
-    return `
-
-        <div class="plant-fact">
-
-            <span>
-                ${escapeHTML(label)}
-            </span>
-
-            <strong>
-                ${escapeHTML(value)}
-            </strong>
-
-        </div>
-
-    `;
-
-}
-
-
-// ======================================================
-// SHOW MODAL
-// ======================================================
-
-function showModal() {
+    /*
+       Sunlight
+    */
 
     if (
-        typeof bootstrap === "undefined" ||
-        !bootstrap.Modal
+        Array.isArray(
+            plant.sunlight
+        ) &&
+        plant.sunlight.length
     ) {
 
-        console.error(
-            "Bootstrap Modal is unavailable."
+        tips.push(
+            `Provide suitable ${plant.sunlight.join(", ").toLowerCase()} conditions.`
         );
 
-        return;
+    }
+
+    else {
+
+        tips.push(
+            "Place the plant where it receives suitable natural light."
+        );
 
     }
 
 
-    const modal =
-        bootstrap.Modal.getOrCreateInstance(
-            plantModal
+    /*
+       Indoor plants
+    */
+
+    if (plant.indoor === true) {
+
+        tips.push(
+            "This plant can be grown indoors, but make sure it still receives adequate light and ventilation."
         );
 
+    }
 
-    modal.show();
+
+    /*
+       Cycle
+    */
+
+    if (
+        plant.cycle &&
+        plant.cycle.toLowerCase()
+            .includes("perennial")
+    ) {
+
+        tips.push(
+            "As a perennial plant, it can continue growing across multiple seasons when properly cared for."
+        );
+
+    }
+
+
+    /*
+       General tip
+    */
+
+    tips.push(
+        "Monitor the leaves and soil regularly so you can respond early to signs of stress."
+    );
+
+
+    return tips;
 
 }
 
 
-// ======================================================
-// SEARCH
-// ======================================================
+/* ======================================================
+   CATEGORY LABEL
+====================================================== */
 
-function setupSearch() {
+function getCategoryLabel(category) {
 
-    if (!plantSearch) {
+    const labels = {
+
+        all: "All Plants",
+
+        trees: "Trees",
+
+        flowers: "Flowers",
+
+        herbs: "Herbs",
+
+        houseplants: "Houseplants",
+
+        succulents: "Succulents",
+
+        other: "Other"
+
+    };
+
+
+    return (
+        labels[category] ||
+        "Plant"
+    );
+
+}
+
+
+/* ======================================================
+   MODAL
+====================================================== */
+
+function openModal() {
+
+    if (!plantModal) {
         return;
     }
 
 
-    plantSearch.addEventListener(
-        "input",
+    if (
+        typeof bootstrap !== "undefined"
+    ) {
+
+        const modal =
+            bootstrap.Modal.getOrCreateInstance(
+                plantModal
+            );
+
+
+        modal.show();
+
+
+        return;
+
+    }
+
+
+    plantModal.style.display =
+        "block";
+
+
+    plantModal.classList.add(
+        "show"
+    );
+
+}
+
+
+function closeModal() {
+
+    if (!plantModal) {
+        return;
+    }
+
+
+    if (
+        typeof bootstrap !== "undefined"
+    ) {
+
+        const modal =
+            bootstrap.Modal.getInstance(
+                plantModal
+            );
+
+
+        if (modal) {
+            modal.hide();
+        }
+
+
+        return;
+
+    }
+
+
+    plantModal.style.display =
+        "none";
+
+
+    plantModal.classList.remove(
+        "show"
+    );
+
+}
+
+
+/* ======================================================
+   RETRY
+====================================================== */
+
+function initializeRetry() {
+
+    if (!retryButton) {
+        return;
+    }
+
+
+    retryButton.addEventListener(
+        "click",
         () => {
 
-            const keyword =
-                plantSearch.value
-                    .trim()
-                    .toLowerCase();
-
-
-            if (clearSearch) {
-
-                clearSearch.classList.toggle(
-                    "visible",
-                    keyword.length > 0
-                );
-
-            }
-
-
-            applyFilters();
+            loadPlants(
+                currentSearch
+            );
 
         }
     );
 
-
-    clearSearch?.addEventListener(
-        "click",
-        () => {
-
-            plantSearch.value = "";
-
-            clearSearch.classList.remove(
-                "visible"
-            );
-
-            applyFilters();
-
-            plantSearch.focus();
-
-        }
-    );
-
 }
 
 
-// ======================================================
-// CATEGORY
-// ======================================================
-
-function setupCategories() {
-
-    if (!categoryFilters) {
-        return;
-    }
-
-
-    const buttons =
-        categoryFilters.querySelectorAll(
-            ".category-btn"
-        );
-
-
-    buttons.forEach(button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                buttons.forEach(btn =>
-                    btn.classList.remove(
-                        "active"
-                    )
-                );
-
-
-                button.classList.add(
-                    "active"
-                );
-
-
-                activeCategory =
-                    button.dataset.category ||
-                    "all";
-
-
-                applyFilters();
-
-            }
-        );
-
-    });
-
-}
-
-
-// ======================================================
-// SORT
-// ======================================================
-
-function setupSorting() {
-
-    plantSort?.addEventListener(
-        "change",
-        applyFilters
-    );
-
-}
-
-
-// ======================================================
-// FILTER
-// ======================================================
-
-function applyFilters() {
-
-    const keyword =
-        plantSearch
-            ? plantSearch.value
-                .trim()
-                .toLowerCase()
-            : "";
-
-
-    filteredPlants =
-        plants.filter(plant => {
-
-            const searchableText = `
-
-                ${plant.name}
-
-                ${plant.scientificName}
-
-                ${plant.description}
-
-            `.toLowerCase();
-
-
-            const matchesSearch =
-                !keyword ||
-                searchableText.includes(keyword);
-
-
-            const matchesCategory =
-                activeCategory === "all" ||
-                plant.category === activeCategory;
-
-
-            return (
-                matchesSearch &&
-                matchesCategory
-            );
-
-        });
-
-
-    sortPlants();
-
-    renderPlants();
-
-}
-
-
-// ======================================================
-// SORT
-// ======================================================
-
-function sortPlants() {
-
-    const sort =
-        plantSort?.value;
-
-
-    if (sort === "name-asc") {
-
-        filteredPlants.sort(
-            (a, b) =>
-                a.name.localeCompare(b.name)
-        );
-
-    }
-
-
-    if (sort === "name-desc") {
-
-        filteredPlants.sort(
-            (a, b) =>
-                b.name.localeCompare(a.name)
-        );
-
-    }
-
-}
-
-
-// ======================================================
-// RETRY
-// ======================================================
-
-function setupRetry() {
-
-    retryPlants?.addEventListener(
-        "click",
-        loadPlants
-    );
-
-}
-
-
-// ======================================================
-// STATES
-// ======================================================
+/* ======================================================
+   UI STATES
+====================================================== */
 
 function showLoading() {
 
-    plantLoading.hidden = false;
+    hideEmpty();
 
-    plantError.hidden = true;
+    hideError();
 
-    plantEmpty.hidden = true;
 
-    plantGrid.innerHTML = "";
+    if (loadingState) {
+
+        loadingState.style.display =
+            "block";
+
+    }
 
 }
 
 
 function hideLoading() {
 
-    plantLoading.hidden = true;
+    if (loadingState) {
+
+        loadingState.style.display =
+            "none";
+
+    }
+
+}
+
+
+function showEmpty() {
+
+    hideLoading();
+
+
+    if (emptyState) {
+
+        emptyState.style.display =
+            "block";
+
+    }
+
+}
+
+
+function hideEmpty() {
+
+    if (emptyState) {
+
+        emptyState.style.display =
+            "none";
+
+    }
 
 }
 
 
 function showError() {
 
-    plantLoading.hidden = true;
+    hideLoading();
 
-    plantEmpty.hidden = true;
+    hideEmpty();
 
-    plantError.hidden = false;
+
+    if (errorState) {
+
+        errorState.style.display =
+            "block";
+
+    }
 
 }
 
 
-function hideStates() {
+function hideError() {
 
-    plantLoading.hidden = true;
+    if (errorState) {
 
-    plantError.hidden = true;
+        errorState.style.display =
+            "none";
 
-    plantEmpty.hidden = true;
+    }
 
 }
 
 
-// ======================================================
-// CATEGORY FORMAT
-// ======================================================
+/* ======================================================
+   HELPERS
+====================================================== */
 
-function normalizeCategory(category) {
-
-    if (!category) {
-        return "other";
-    }
-
-
-    const value =
-        String(category)
-            .toLowerCase()
-            .trim();
-
-
-    if (value.includes("tree")) {
-        return "tree";
-    }
-
-    if (value.includes("flower")) {
-        return "flower";
-    }
-
-    if (value.includes("herb")) {
-        return "herb";
-    }
-
-    if (value.includes("shrub")) {
-        return "shrub";
-    }
-
-
-    return "other";
-
-}
-
-
-function formatCategory(category) {
-
-    if (!category) {
-        return "Plant";
-    }
-
+function getPlantName(plant) {
 
     return (
-        category.charAt(0).toUpperCase() +
-        category.slice(1)
+        plant.common_name ||
+        plant.name ||
+        "Unknown Plant"
     );
 
 }
 
 
-// ======================================================
-// SLUG
-// ======================================================
+function getScientificName(plant) {
 
-function createSlug(value) {
+    if (
+        Array.isArray(
+            plant.scientific_name
+        )
+    ) {
 
-    return String(value)
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "");
+        return (
+            plant.scientific_name[0] ||
+            "Unknown"
+        );
+
+    }
+
+
+    return (
+        plant.scientific_name ||
+        "Unknown"
+    );
 
 }
 
 
-// ======================================================
-// ESCAPE HTML
-// ======================================================
+function getPlantImage(plant) {
+
+    return (
+        plant.default_image?.regular_url ||
+        plant.default_image?.medium_url ||
+        plant.default_image?.original_url ||
+        "images/plant-placeholder.jpg"
+    );
+
+}
+
+
+function formatValue(value) {
+
+    if (Array.isArray(value)) {
+
+        return value.join(", ");
+
+    }
+
+
+    if (
+        value === null ||
+        value === undefined ||
+        value === ""
+    ) {
+
+        return "Not available";
+
+    }
+
+
+    return String(value);
+
+}
+
 
 function escapeHTML(value) {
 
@@ -1103,10 +1726,60 @@ function escapeHTML(value) {
 
 
     return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+function getCategoryTip(category) {
+
+    const tips = {
+
+        tree:
+            "Give it enough space and suitable sunlight to grow.",
+
+        flower:
+            "Monitor sunlight and soil moisture regularly.",
+
+        herb:
+            "Check the soil before watering and provide suitable light.",
+
+        shrub:
+            "Keep the soil healthy and give the plant suitable space to grow.",
+
+        other:
+            "Check the plant's care guide for specific needs."
+
+    };
+
+
+    return (
+        tips[category] ||
+        tips.other
+    );
 
 }

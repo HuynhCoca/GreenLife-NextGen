@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Perenual API Test</title>
+</head>
+
+<body>
+
+    <h1>Perenual API Test</h1>
+
+    <pre id="result">Testing...</pre>
+
+    <script>
+
+        const API_KEY = "sk-ro4W6a782c7a3598419236";
+
+        async function testPerenual() {
+
+            try {
+
+                const url =
+                    `https://www.perenual.com/api/v2/species-list?key=${API_KEY}&q=monstera`;
+
+                const response = await fetch(url);
+
+                console.log("Status:", response.status);
+
+                const data = await response.json();
+
+                console.log("Perenual response:", data);
+
+                document.getElementById("result").textContent =
+                    JSON.stringify(data, null, 2);
+
+            }
+
+            catch (error) {
+
+                console.error("Perenual error:", error);
+
+                document.getElementById("result").textContent =
+                    error.toString();
+
+            }
+
+        }
+
+        testPerenual();
+
+    </script>
+
+</body>
+</html>
