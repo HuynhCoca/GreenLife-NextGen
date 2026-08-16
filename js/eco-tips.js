@@ -182,8 +182,6 @@ async function loadPlants(
         applyFilters();
 
 
-        renderPagination();
-
     }
 
     catch (error) {
@@ -579,9 +577,9 @@ function applyFilters() {
     let result = [...plants];
 
 
-    /* ================================================
-       CATEGORY FILTER
-    ================================================ */
+    // ================================================
+    // CATEGORY
+    // ================================================
 
     if (
         currentCategory &&
@@ -597,9 +595,9 @@ function applyFilters() {
     }
 
 
-    /* ================================================
-       SORT
-    ================================================ */
+    // ================================================
+    // SORT
+    // ================================================
 
     if (currentSort === "name") {
 
@@ -626,7 +624,63 @@ function applyFilters() {
     }
 
 
-    renderPlants(result);
+    // ================================================
+    // CALCULATE WEBSITE PAGES
+    // ================================================
+
+    totalPages =
+        Math.ceil(
+            result.length /
+            PLANTS_PER_PAGE
+        );
+
+
+    // ================================================
+    // SAFETY
+    // ================================================
+
+    if (totalPages === 0) {
+
+        totalPages = 1;
+
+    }
+
+
+    if (currentPage > totalPages) {
+
+        currentPage = totalPages;
+
+    }
+
+
+    // ================================================
+    // GET CURRENT 9 PLANTS
+    // ================================================
+
+    const startIndex =
+        (currentPage - 1) *
+        PLANTS_PER_PAGE;
+
+
+    const endIndex =
+        startIndex +
+        PLANTS_PER_PAGE;
+
+
+    const pagePlants =
+        result.slice(
+            startIndex,
+            endIndex
+        );
+
+
+    // ================================================
+    // DISPLAY
+    // ================================================
+
+    renderPlants(pagePlants);
+
+    renderPagination();
 
 }
 
@@ -672,6 +726,7 @@ function renderPlants(data) {
     });
 
 }
+
 
 function renderPagination() {
 
@@ -844,6 +899,7 @@ function renderPagination() {
     );
 
 }
+
 /* ======================================================
    CREATE PLANT CARD
 ====================================================== */

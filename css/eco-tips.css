@@ -1260,6 +1260,17 @@ a {
 }
 
 
+.pagination-dots {
+    width: 30px;
+    text-align: center;
+
+    color: #7a8b80;
+
+    font-weight: 600;
+
+    user-select: none;
+}
+
 @media (max-width: 480px) {
 
     .plant-pagination {
