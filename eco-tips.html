@@ -1,861 +1,420 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Eco Tips | GreenLife</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- ==================================================
-         GOOGLE FONT
-    ================================================== -->
-
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
-
-    <!-- ==================================================
-         BOOTSTRAP
-    ================================================== -->
-
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-
-    <!-- ==================================================
-         BOOTSTRAP ICONS
-    ================================================== -->
-
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
-    >
-
-
-    <!-- ==================================================
-         ECO TIPS CSS
-    ================================================== -->
-
-    <link
-        rel="stylesheet"
-        href="css/eco-tips.css"
-    >
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/eco-tips.css">
 </head>
 
-
 <body class="eco-page">
-
-
 <div class="eco-shell">
 
-
-    <!-- ==================================================
-         NAVBAR
-    ================================================== -->
-
+    <!-- NAVBAR -->
     <nav class="top-nav">
-
-
-        <a
-            href="index.html"
-            class="nav-brand"
-        >
-
+        <a href="index.html" class="nav-brand">
             <i class="bi bi-globe-americas"></i>
-
-            GreenLife
-
+            <span>GreenLife</span>
         </a>
 
-
         <div class="nav-links">
-
-            <a href="index.html">
-                Home
-            </a>
-
-            <a
-                href="eco-tips.html"
-                class="active"
-            >
-                Eco Tips
-            </a>
-
-            <a href="index.html#impact">
-                Impact
-            </a>
-
-            <a href="blog.html">
-                Blog
-            </a>
-
-            <a href="support.html">
-                Support
-            </a>
-
+            <a href="index.html">Home</a>
+            <a href="eco-tips.html" class="active">Eco Tips</a>
+            <a href="support.html">Support</a>
+            <a href="blog.html">Articles</a>
+            <a href="premium.html">Premium</a>
         </div>
 
-
-        <div
-            class="nav-actions"
-            id="navActions"
-        >
-
-            <a
-                href="auth.html"
-                class="ghost-btn"
-            >
-
-                Login
-
-            </a>
-
+        <div class="nav-actions" id="navActions">
+            <a href="auth.html" class="ghost-btn">Login</a>
         </div>
-
     </nav>
 
-
-
-    <!-- ==================================================
-         HERO
-    ================================================== -->
-
+    <!-- HERO -->
     <header class="eco-hero">
-
-
         <div class="eco-hero-content">
-
-
             <p class="eyebrow">
-
                 <i class="bi bi-leaf-fill"></i>
-
-                GreenLife Plant Encyclopedia
-
+                Learn • Grow • Care
             </p>
-
 
             <h1>
-
-                Discover the plants
-                that make our world
-                <span>greener.</span>
-
+                Discover what you're growing.
+                <span>Learn how to care for it.</span>
             </h1>
 
-
             <p class="hero-description">
-
-                Explore trees, plants, and seeds from
-                around the world. Learn about different
-                species and discover how you can grow
-                greener spaces around you.
-
+                Explore GreenLife's plant encyclopedia, discover useful care information,
+                and find simple ways to create healthier, greener spaces.
             </p>
 
-
-            <!-- SEARCH -->
-
-            <div class="plant-search">
-
-                <i class="bi bi-search"></i>
-
-                <input
-                    type="search"
-                    id="plantSearch"
-                    placeholder="Search for a plant or tree..."
-                    autocomplete="off"
-                >
-
-                <button
-                    type="button"
-                    id="clearSearch"
-                    class="clear-search"
-                    aria-label="Clear search"
-                >
-
-                    <i class="bi bi-x-lg"></i>
-
-                </button>
-
+            <div class="hero-search-wrap">
+                <div class="plant-search">
+                    <i class="bi bi-search"></i>
+                    <input
+                        type="search"
+                        id="plantSearch"
+                        placeholder="Search for a plant, flower, herb, or tree..."
+                        autocomplete="off"
+                    >
+                    <button type="button" id="clearSearch" class="clear-search" aria-label="Clear search">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <span class="search-hint">
+                    <i class="bi bi-keyboard"></i>
+                    Press Enter to search
+                </span>
             </div>
 
-
+            <div class="hero-mini-links">
+                <a href="#plants"><i class="bi bi-grid-3x3-gap"></i> Browse plants</a>
+                <a href="#how-it-works"><i class="bi bi-lightbulb"></i> How it works</a>
+                <a href="premium.html"><i class="bi bi-stars"></i> Premium care tools</a>
+            </div>
         </div>
 
-
-        <div class="eco-hero-image">
-
-            <img
-                src="https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&w=1200&q=80"
-                alt="Green plants growing in nature"
-            >
-
+        <div class="eco-hero-side">
+            <div class="hero-image-card">
+                <img
+                    src="https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&w=1200&q=80"
+                    alt="Green plants growing in nature"
+                >
+                <div class="image-overlay-card">
+                    <div class="overlay-icon">
+                        <i class="bi bi-flower1"></i>
+                    </div>
+                    <div>
+                        <strong>Care starts with knowledge.</strong>
+                        <span>Discover • Understand • Grow</span>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </header>
 
-
-
-    <!-- ==================================================
-         QUICK INFO
-    ================================================== -->
-
+    <!-- QUICK STATS -->
     <section class="eco-stats">
-
-
         <article class="eco-stat">
-
-            <div class="stat-icon">
-
-                <i class="bi bi-tree-fill"></i>
-
-            </div>
-
+            <div class="stat-icon"><i class="bi bi-tree-fill"></i></div>
             <div>
-
-                <strong id="plantCount">
-                    0
-                </strong>
-
-                <span>
-                    Plants discovered
-                </span>
-
+                <strong id="plantCount">0</strong>
+                <span>Plants in this collection</span>
             </div>
-
         </article>
 
-
         <article class="eco-stat">
-
-            <div class="stat-icon">
-
-                <i class="bi bi-search"></i>
-
-            </div>
-
+            <div class="stat-icon"><i class="bi bi-search"></i></div>
             <div>
-
-                <strong>
-                    Explore
-                </strong>
-
-                <span>
-                    Search plant species
-                </span>
-
+                <strong>Explore</strong>
+                <span>Search by plant name</span>
             </div>
-
         </article>
 
-
         <article class="eco-stat">
-
-            <div class="stat-icon">
-
-                <i class="bi bi-flower1"></i>
-
-            </div>
-
+            <div class="stat-icon"><i class="bi bi-book"></i></div>
             <div>
-
-                <strong>
-                    Learn
-                </strong>
-
-                <span>
-                    Discover plant facts
-                </span>
-
+                <strong>Learn</strong>
+                <span>Understand plant needs</span>
             </div>
-
         </article>
 
-
         <article class="eco-stat">
-
-            <div class="stat-icon">
-
-                <i class="bi bi-globe-americas"></i>
-
-            </div>
-
+            <div class="stat-icon"><i class="bi bi-heart-fill"></i></div>
             <div>
-
-                <strong>
-                    Grow
-                </strong>
-
-                <span>
-                    Build greener spaces
-                </span>
-
+                <strong>Care</strong>
+                <span>Build greener spaces</span>
             </div>
-
         </article>
-
     </section>
 
+    <!-- JOURNEY STRIP -->
+    <section class="care-journey" id="how-it-works">
+        <div class="journey-heading">
+            <p class="eyebrow">Your GreenLife journey</p>
+            <h2>From curiosity to confidence.</h2>
+            <p>Use Eco Tips as your starting point, then build better plant-care habits over time.</p>
+        </div>
 
+        <div class="journey-grid">
+            <article class="journey-step">
+                <span class="journey-number">01</span>
+                <div class="journey-icon"><i class="bi bi-search-heart"></i></div>
+                <h3>Explore</h3>
+                <p>Search the encyclopedia and discover a plant worth learning about.</p>
+            </article>
 
-    <!-- ==================================================
-         PLANT EXPLORER
-    ================================================== -->
+            <article class="journey-step">
+                <span class="journey-number">02</span>
+                <div class="journey-icon"><i class="bi bi-journal-text"></i></div>
+                <h3>Understand</h3>
+                <p>Open its care guide to learn about watering, light, cycle, origin, and more.</p>
+            </article>
 
-    <main class="plant-explorer">
+            <article class="journey-step">
+                <span class="journey-number">03</span>
+                <div class="journey-icon"><i class="bi bi-droplet-half"></i></div>
+                <h3>Care</h3>
+                <p>Turn what you learn into practical routines for your own growing space.</p>
+            </article>
 
+            <article class="journey-step coming-soon-step">
+                <span class="coming-badge">COMING SOON</span>
+                <span class="journey-number">04</span>
+                <div class="journey-icon"><i class="bi bi-bell"></i></div>
+                <h3>Stay on track</h3>
+                <p>Smart reminders and personal plant tracking will make ongoing care easier.</p>
+            </article>
+        </div>
+    </section>
 
+    <!-- PLANT EXPLORER -->
+    <main class="plant-explorer" id="plants">
         <div class="section-heading">
-
-
             <div>
-
-                <p class="eyebrow">
-                    Explore the encyclopedia
-                </p>
-
-                <h2>
-                    Find your next plant
-                </h2>
-
+                <p class="eyebrow">Plant encyclopedia</p>
+                <h2>Find your next plant.</h2>
             </div>
-
-
             <p>
-                Browse plants and discover information
-                about their characteristics, growth,
-                and environmental value.
+                Browse the current collection, filter by GreenLife category, and open a care guide for more detail.
             </p>
-
         </div>
 
+        <div class="explorer-card">
+            <div class="plant-controls">
+                <div class="category-filters" id="categoryFilters">
+                    <button type="button" class="category-btn active" data-category="all">
+                        <i class="bi bi-grid"></i> All
+                    </button>
+                    <button type="button" class="category-btn" data-category="tree">
+                        <i class="bi bi-tree"></i> Trees
+                    </button>
+                    <button type="button" class="category-btn" data-category="flower">
+                        <i class="bi bi-flower1"></i> Flowers
+                    </button>
+                    <button type="button" class="category-btn" data-category="herb">
+                        <i class="bi bi-flower2"></i> Herbs
+                    </button>
+                    <button type="button" class="category-btn" data-category="shrub">
+                        <i class="bi bi-tree"></i> Shrubs
+                    </button>
+                    <button type="button" class="category-btn" data-category="other">
+                        <i class="bi bi-three-dots"></i> Other
+                    </button>
+                </div>
 
-
-        <!-- ==================================================
-             FILTER BAR
-        ================================================== -->
-
-        <div class="plant-controls">
-
-
-            <div
-                class="category-filters"
-                id="categoryFilters"
-            >
-
-                <button
-                    type="button"
-                    class="category-btn active"
-                    data-category="all"
-                >
-
-                    All
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="category-btn"
-                    data-category="tree"
-                >
-
-                    <i class="bi bi-tree"></i>
-
-                    Trees
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="category-btn"
-                    data-category="flower"
-                >
-
-                    <i class="bi bi-flower1"></i>
-
-                    Flowers
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="category-btn"
-                    data-category="herb"
-                >
-
-                    <i class="bi bi-flower2"></i>
-
-                    Herbs
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="category-btn"
-                    data-category="shrub"
-                >
-
-                    <i class="bi bi-tree"></i>
-
-                    Shrubs
-
-                </button>
-
-
-                <button
-                    type="button"
-                    class="category-btn"
-                    data-category="other"
->
-                    <i class="bi bi-three-dots"></i>
-                    Other
-                </button>
-
-
+                <div class="plant-sort">
+                    <label for="plantSort">Sort by</label>
+                    <select id="plantSort">
+                        <option value="default">Recommended</option>
+                        <option value="name-asc">Name A–Z</option>
+                        <option value="name-desc">Name Z–A</option>
+                    </select>
+                </div>
             </div>
 
-
-            <div class="plant-sort">
-
-                <label for="plantSort">
-                    Sort by
-                </label>
-
-                <select id="plantSort">
-
-                    <option value="default">
-                        Recommended
-                    </option>
-
-                    <option value="name-asc">
-                        Name A–Z
-                    </option>
-
-                    <option value="name-desc">
-                        Name Z–A
-                    </option>
-
-                </select>
-
+            <div class="explorer-status-row">
+                <div>
+                    <span class="status-dot"></span>
+                    <span>Plant explorer</span>
+                </div>
+                <span class="status-copy" id="explorerStatus">Discovering plants...</span>
             </div>
 
+            <div id="plantLoading" class="plant-loading">
+                <div class="spinner-border" role="status"></div>
+                <p>Discovering plants...</p>
+            </div>
+
+            <div id="plantError" class="plant-state" hidden>
+                <div class="state-icon"><i class="bi bi-cloud-slash"></i></div>
+                <h3>We couldn't load the plants.</h3>
+                <p>Something went wrong while connecting to the plant database.</p>
+                <button type="button" class="primary-btn" id="retryPlants">
+                    <i class="bi bi-arrow-clockwise"></i>
+                    Try Again
+                </button>
+            </div>
+
+            <div id="plantEmpty" class="plant-state" hidden>
+                <div class="state-icon"><i class="bi bi-search"></i></div>
+                <h3>No plants found.</h3>
+                <p>Try another search or choose a different category.</p>
+            </div>
+
+            <div id="plantGrid" class="plant-grid"></div>
+            <div id="plantPagination" class="plant-pagination"></div>
         </div>
-
-
-
-        <!-- ==================================================
-             LOADING STATE
-        ================================================== -->
-
-        <div
-            id="plantLoading"
-            class="plant-loading"
-        >
-
-            <div
-                class="spinner-border"
-                role="status"
-            >
-
-                <span class="visually-hidden">
-                    Loading plants...
-                </span>
-
-            </div>
-
-            <p>
-                Discovering plants...
-            </p>
-
-        </div>
-
-
-
-        <!-- ==================================================
-             ERROR STATE
-        ================================================== -->
-
-        <div
-            id="plantError"
-            class="plant-state"
-            hidden
-        >
-
-            <div class="state-icon">
-
-                <i class="bi bi-cloud-slash"></i>
-
-            </div>
-
-            <h3>
-                We couldn't load the plants.
-            </h3>
-
-            <p>
-                Something went wrong while connecting
-                to the plant database.
-            </p>
-
-            <button
-                type="button"
-                class="primary-btn"
-                id="retryPlants"
-            >
-
-                <i class="bi bi-arrow-clockwise"></i>
-
-                Try Again
-
-            </button>
-
-        </div>
-
-
-
-        <!-- ==================================================
-             EMPTY SEARCH STATE
-        ================================================== -->
-
-        <div
-            id="plantEmpty"
-            class="plant-state"
-            hidden
-        >
-
-            <div class="state-icon">
-
-                <i class="bi bi-search"></i>
-
-            </div>
-
-            <h3>
-                No plants found.
-            </h3>
-
-            <p>
-                Try searching for another plant or
-                choosing a different category.
-            </p>
-
-        </div>
-
-
-
-        <!-- ==================================================
-             PLANT GRID
-        ================================================== -->
-
-        <div
-            id="plantGrid"
-            class="plant-grid"
-        ></div>
-        <div
-            id="plantPagination"
-            class="plant-pagination"
-        ></div>
-
     </main>
 
+    <!-- CARE TOPICS -->
+    <section class="care-topics">
+        <div class="section-heading centered">
+            <p class="eyebrow">Beyond the encyclopedia</p>
+            <h2>Build better growing habits.</h2>
+            <p>Plant knowledge is only the beginning. GreenLife is designed to turn information into action.</p>
+        </div>
 
+        <div class="topic-grid">
+            <article class="topic-card">
+                <div class="topic-icon"><i class="bi bi-droplet-half"></i></div>
+                <div>
+                    <h3>Water smarter</h3>
+                    <p>Understand how watering habits affect healthy plant growth and avoid overwatering.</p>
+                </div>
+            </article>
 
-    <!-- ==================================================
-         SEEDS SECTION
-    ================================================== -->
+            <article class="topic-card">
+                <div class="topic-icon"><i class="bi bi-sun"></i></div>
+                <div>
+                    <h3>Use light well</h3>
+                    <p>Learn why sunlight matters and how different plants can have different light needs.</p>
+                </div>
+            </article>
 
+            <article class="topic-card">
+                <div class="topic-icon"><i class="bi bi-recycle"></i></div>
+                <div>
+                    <h3>Grow sustainably</h3>
+                    <p>Make greener choices around soil, containers, resources, and everyday plant care.</p>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- SEED STORY -->
     <section class="seed-section">
-
-
         <div class="seed-image">
-
             <img
                 src="https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&w=1200&q=80"
                 alt="Seeds and young plants ready for growing"
             >
-
         </div>
-
 
         <div class="seed-content">
-
-
-            <p class="eyebrow">
-
-                <i class="bi bi-flower1"></i>
-
-                From seed to tree
-
-            </p>
-
-
-            <h2>
-                Every forest starts
-                with something small.
-            </h2>
-
-
+            <p class="eyebrow"><i class="bi bi-flower1"></i> From seed to tree</p>
+            <h2>Every forest starts with something small.</h2>
             <p>
-
-                Seeds are where a plant's journey begins.
-                Learning how plants grow can help you make
-                better choices for your own garden and
-                understand the role plants play in our
-                environment.
-
+                Seeds are where a plant's journey begins. Understanding water, sunlight, soil,
+                and growth can help you make better choices for your own space and appreciate
+                the role plants play in a healthier environment.
             </p>
-
 
             <div class="seed-features">
-
-
                 <div class="seed-feature">
-
-                    <div class="feature-icon">
-
-                        <i class="bi bi-droplet"></i>
-
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Water
-                        </h3>
-
-                        <p>
-                            Learn how plants depend on
-                            water to begin growing.
-                        </p>
-
-                    </div>
-
+                    <div class="feature-icon"><i class="bi bi-droplet"></i></div>
+                    <div><h3>Water</h3><p>Learn how plants depend on water as they begin growing.</p></div>
                 </div>
-
-
                 <div class="seed-feature">
-
-                    <div class="feature-icon">
-
-                        <i class="bi bi-sun"></i>
-
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Sunlight
-                        </h3>
-
-                        <p>
-                            Discover why light matters
-                            for healthy plant growth.
-                        </p>
-
-                    </div>
-
+                    <div class="feature-icon"><i class="bi bi-sun"></i></div>
+                    <div><h3>Sunlight</h3><p>Discover why light matters for healthy plant growth.</p></div>
                 </div>
-
-
                 <div class="seed-feature">
-
-                    <div class="feature-icon">
-
-                        <i class="bi bi-flower2"></i>
-
-                    </div>
-
-                    <div>
-
-                        <h3>
-                            Healthy soil
-                        </h3>
-
-                        <p>
-                            Understand the foundation
-                            plants need to thrive.
-                        </p>
-
-                    </div>
-
+                    <div class="feature-icon"><i class="bi bi-flower2"></i></div>
+                    <div><h3>Healthy soil</h3><p>Understand the foundation plants need to thrive.</p></div>
                 </div>
+            </div>
+        </div>
+    </section>
 
-
+    <!-- FUTURE TOOLS -->
+    <section class="future-tools">
+        <div class="future-card">
+            <div class="future-copy">
+                <p class="eyebrow">What's next</p>
+                <h2>Eco Tips is growing too.</h2>
+                <p>
+                    GreenLife is planned to evolve from an encyclopedia into a personal plant-care companion.
+                </p>
             </div>
 
+            <div class="future-tool-list">
+                <div class="future-tool">
+                    <div class="future-tool-icon"><i class="bi bi-heart"></i></div>
+                    <div><strong>Favorite plants</strong><span>Save plants you want to revisit</span></div>
+                    <span class="tool-state">PLANNED</span>
+                </div>
 
+                <div class="future-tool">
+                    <div class="future-tool-icon"><i class="bi bi-bell"></i></div>
+                    <div><strong>Smart care reminders</strong><span>Keep up with your plant routine</span></div>
+                    <span class="tool-state">PLANNED</span>
+                </div>
+
+                <div class="future-tool">
+                    <div class="future-tool-icon"><i class="bi bi-stars"></i></div>
+                    <div><strong>Personalized recommendations</strong><span>Get suggestions based on your growing goals</span></div>
+                    <span class="tool-state">PREMIUM</span>
+                </div>
+            </div>
         </div>
-
     </section>
 
-
-
-    <!-- ==================================================
-         ECO TIP CTA
-    ================================================== -->
-
+    <!-- CTA -->
     <section class="eco-cta">
-
-
         <div>
-
-            <p class="eyebrow">
-                Start small
-            </p>
-
-            <h2>
-                You don't need a forest to make a difference.
-            </h2>
-
-            <p>
-                Plant something, learn something,
-                and inspire someone else to do the same.
-            </p>
-
+            <p class="eyebrow">Keep growing</p>
+            <h2>Learn something new. Then do something with it.</h2>
+            <p>Explore plants, build better habits, and make your next small action count.</p>
         </div>
 
-
-        <a
-            href="support.html"
-            class="primary-btn"
-        >
-
-            <i class="bi bi-heart-fill"></i>
-
-            Support GreenLife
-
-        </a>
-
+        <div class="cta-actions">
+            <a href="support.html" class="secondary-btn">
+                <i class="bi bi-globe-americas"></i>
+                See your impact
+            </a>
+            <a href="premium.html" class="primary-btn">
+                <i class="bi bi-stars"></i>
+                Explore Premium
+            </a>
+        </div>
     </section>
 
-
-
-    <!-- ==================================================
-         FOOTER
-    ================================================== -->
-
+    <!-- FOOTER -->
     <footer class="page-footer">
-
-        <p>
-            © 2026 GreenLife.
-            Built for a cleaner and healthier future.
-        </p>
-
+        <div class="footer-main">
+            <div>
+                <a href="index.html" class="footer-brand"><i class="bi bi-leaf-fill"></i> GreenLife</a>
+                <p>Learn. Grow. Make an Impact.</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="eco-tips.html">Eco Tips</a>
+                <a href="blog.html">Articles</a>
+                <a href="support.html">Impact & Support</a>
+                <a href="premium.html">Premium</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 GreenLife. Built for a cleaner and healthier future.
+        </div>
     </footer>
 
-
 </div>
 
-
-
-<!-- ====================================================
-     PLANT DETAILS MODAL
-===================================================== -->
-
-<div
-    class="modal fade"
-    id="plantModal"
-    tabindex="-1"
-    aria-labelledby="plantModalLabel"
-    aria-hidden="true"
->
-
-    <div
-        class="modal-dialog modal-lg modal-dialog-centered"
-    >
-
+<!-- PLANT DETAILS MODAL -->
+<div class="modal fade" id="plantModal" tabindex="-1" aria-labelledby="plantModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content plant-modal">
-
-
             <div class="modal-header">
-
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                ></button>
-
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
-
-            <div
-                class="modal-body"
-                id="plantModalContent"
-            >
-
-                <!--
-                    Plant details will be inserted
-                    here by eco-tips.js
-                -->
-
-            </div>
-
+            <div class="modal-body" id="plantModalContent"></div>
         </div>
-
     </div>
-
 </div>
 
-
-
-<!-- ==================================================
-     BOOTSTRAP JS
-================================================== -->
-
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
-></script>
-
-
-
-<!-- ==================================================
-     NAVBAR
-================================================== -->
-
-<script
-    type="module"
-    src="js/navbar.js"
-></script>
-
-
-
-<!-- ==================================================
-     ECO TIPS JS
-================================================== -->
-
-<script
-    type="module"
-    src="js/eco-tips.js"
-></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="js/navbar.js"></script>
+<script type="module" src="js/eco-tips.js"></script>
 
 </body>
-
 </html>

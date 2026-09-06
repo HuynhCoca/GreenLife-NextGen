@@ -6,6 +6,7 @@ import {
     addDoc,
     setDoc,
     getDoc,
+    getDocs,
     serverTimestamp,
     increment
 } from "./firebase.js";
@@ -16,7 +17,7 @@ import {
 
 
 // ======================================================
-// CONSTANTS
+// CONFIG
 // ======================================================
 
 const TREES_PER_DOLLAR = 5;
@@ -26,6 +27,7 @@ const TREES_PER_DOLLAR = 5;
 // ELEMENTS
 // ======================================================
 
+// Donation controls
 const donationOptions =
     document.querySelectorAll(".donation-option");
 
@@ -41,6 +43,7 @@ const treeAmount =
 const donateBtn =
     document.getElementById("donateBtn");
 
+// Donation modal
 const donationModalElement =
     document.getElementById("donationModal");
 
@@ -53,22 +56,53 @@ const checkoutAmount =
 const checkoutTrees =
     document.getElementById("checkoutTrees");
 
+// Success modal
+const successModalElement =
+    document.getElementById("successModal");
+
 const successTrees =
     document.getElementById("successTrees");
+
+// Personal impact
+const userTrees =
+    document.getElementById("userTrees");
+
+const userDonated =
+    document.getElementById("userDonated");
+
+const userDonations =
+    document.getElementById("userDonations");
+
+// Payment fields
+const cardName =
+    document.getElementById("cardName");
+
+const cardNumber =
+    document.getElementById("cardNumber");
+
+const expiryDate =
+    document.getElementById("expiryDate");
+
+const cvv =
+    document.getElementById("cvv");
 
 
 // ======================================================
 // BOOTSTRAP MODALS
 // ======================================================
 
-const donationModal =
-    new bootstrap.Modal(donationModalElement);
+let donationModal = null;
+let successModal = null;
 
-const successModalElement =
-    document.getElementById("successModal");
+if (donationModalElement) {
+    donationModal =
+        new bootstrap.Modal(donationModalElement);
+}
 
-const successModal =
-    new bootstrap.Modal(successModalElement);
+if (successModalElement) {
+    successModal =
+        new bootstrap.Modal(successModalElement);
+}
 
 
 // ======================================================
@@ -86,19 +120,14 @@ let selectedAmount = 1;
 
 
 // ======================================================
-// AUTH STATE
+// FORMAT MONEY
 // ======================================================
 
-onAuthStateChanged(auth, (user) => {
+function formatMoney(amount) {
 
-    currentUser = user;
+    return `$${Number(amount || 0).toLocaleString("en-US")}`;
 
-    console.log(
-        "Current user:",
-        currentUser
-    );
-
-});
+}
 
 
 // ======================================================
@@ -107,7 +136,9 @@ onAuthStateChanged(auth, (user) => {
 
 function calculateTrees(amount) {
 
-    return amount * TREES_PER_DOLLAR;
+    return Math.floor(
+        Number(amount) * TREES_PER_DOLLAR
+    );
 
 }
 
@@ -118,24 +149,42 @@ function calculateTrees(amount) {
 
 function updateDonationDisplay(amount) {
 
+    amount = Math.floor(Number(amount));
+
+    if (!amount || amount < 1) {
+        return;
+    }
+
     selectedAmount = amount;
 
     const trees =
         calculateTrees(amount);
 
 
-    donationAmount.textContent =
-        `$${amount}`;
+    if (donationAmount) {
+
+        donationAmount.textContent =
+            `$${amount}`;
+
+    }
 
 
-    treeAmount.textContent =
-        trees;
+    if (treeAmount) {
+
+        treeAmount.textContent =
+            trees.toLocaleString();
+
+    }
 
 
-    donateBtn.innerHTML = `
-        <i class="bi bi-heart-fill"></i>
-        Donate $${amount}
-    `;
+    if (donateBtn) {
+
+        donateBtn.innerHTML = `
+            <i class="bi bi-heart-fill"></i>
+            Donate $${amount}
+        `;
+
+    }
 
 }
 
@@ -144,7 +193,7 @@ function updateDonationDisplay(amount) {
 // PRESET DONATION BUTTONS
 // ======================================================
 
-donationOptions.forEach(button => {
+donationOptions.forEach((button) => {
 
     button.addEventListener("click", () => {
 
@@ -157,23 +206,22 @@ donationOptions.forEach(button => {
         }
 
 
-        // Remove selected state
-
-        donationOptions.forEach(option => {
+        // Remove old selection
+        donationOptions.forEach((option) => {
 
             option.classList.remove("selected");
 
         });
 
 
-        // Select current button
-
+        // Select clicked option
         button.classList.add("selected");
 
 
-        // Clear custom amount
-
-        customAmount.value = "";
+        // Clear custom input
+        if (customAmount) {
+            customAmount.value = "";
+        }
 
 
         updateDonationDisplay(amount);
@@ -207,8 +255,7 @@ if (customAmount) {
 
 
         // Remove preset selection
-
-        donationOptions.forEach(option => {
+        donationOptions.forEach((option) => {
 
             option.classList.remove("selected");
 
@@ -230,29 +277,21 @@ if (donateBtn) {
 
     donateBtn.addEventListener("click", () => {
 
-
-        // ==============================================
-        // CHECK LOGIN
-        // ==============================================
-
+        // Must be logged in
         if (!currentUser) {
 
             alert(
                 "Please log in before making a donation."
             );
 
-            window.location.href =
-                "auth.html";
+            window.location.href = "auth.html";
 
             return;
 
         }
 
 
-        // ==============================================
-        // VALIDATE AMOUNT
-        // ==============================================
-
+        // Validate amount
         if (
             !selectedAmount ||
             selectedAmount < 1
@@ -271,23 +310,27 @@ if (donateBtn) {
             calculateTrees(selectedAmount);
 
 
-        // ==============================================
-        // UPDATE CHECKOUT
-        // ==============================================
+        // Update checkout summary
+        if (checkoutAmount) {
 
-        checkoutAmount.textContent =
-            `$${selectedAmount}`;
+            checkoutAmount.textContent =
+                `$${selectedAmount}`;
 
-
-        checkoutTrees.textContent =
-            trees;
+        }
 
 
-        // ==============================================
-        // OPEN MODAL
-        // ==============================================
+        if (checkoutTrees) {
 
-        donationModal.show();
+            checkoutTrees.textContent =
+                trees.toLocaleString();
+
+        }
+
+
+        // Open modal
+        if (donationModal) {
+            donationModal.show();
+        }
 
     });
 
@@ -298,20 +341,14 @@ if (donateBtn) {
 // CARD NUMBER FORMATTING
 // ======================================================
 
-const cardNumber =
-    document.getElementById("cardNumber");
-
-
 if (cardNumber) {
 
     cardNumber.addEventListener("input", () => {
 
         let value =
-            cardNumber.value.replace(/\D/g, "");
-
-
-        value =
-            value.substring(0, 16);
+            cardNumber.value
+                .replace(/\D/g, "")
+                .substring(0, 16);
 
 
         value =
@@ -332,20 +369,14 @@ if (cardNumber) {
 // EXPIRY DATE FORMATTING
 // ======================================================
 
-const expiryDate =
-    document.getElementById("expiryDate");
-
-
 if (expiryDate) {
 
     expiryDate.addEventListener("input", () => {
 
         let value =
-            expiryDate.value.replace(/\D/g, "");
-
-
-        value =
-            value.substring(0, 4);
+            expiryDate.value
+                .replace(/\D/g, "")
+                .substring(0, 4);
 
 
         if (value.length >= 3) {
@@ -370,10 +401,6 @@ if (expiryDate) {
 // CVV FORMATTING
 // ======================================================
 
-const cvv =
-    document.getElementById("cvv");
-
-
 if (cvv) {
 
     cvv.addEventListener("input", () => {
@@ -386,6 +413,152 @@ if (cvv) {
     });
 
 }
+
+
+// ======================================================
+// LOAD PERSONAL IMPACT
+// ======================================================
+
+async function loadPersonalImpact() {
+
+    // Make sure elements exist
+    if (
+        !userTrees ||
+        !userDonated ||
+        !userDonations
+    ) {
+        return;
+    }
+
+
+    // Logged out state
+    if (!currentUser) {
+
+        userTrees.textContent = "0";
+        userDonated.textContent = "$0";
+        userDonations.textContent = "0";
+
+        return;
+
+    }
+
+
+    try {
+
+        const accountRef =
+            doc(
+                db,
+                "accounts",
+                currentUser.uid
+            );
+
+
+        const accountSnapshot =
+            await getDoc(accountRef);
+
+
+        // No account
+        if (!accountSnapshot.exists()) {
+
+            userTrees.textContent = "0";
+            userDonated.textContent = "$0";
+            userDonations.textContent = "0";
+
+            return;
+
+        }
+
+
+        const accountData =
+            accountSnapshot.data();
+
+
+        const donationStats =
+            accountData.donationStats || {};
+
+
+        // Total trees
+        userTrees.textContent =
+            Number(
+                donationStats.totalTrees || 0
+            ).toLocaleString();
+
+
+        // Total donated
+        userDonated.textContent =
+            formatMoney(
+                donationStats.totalDonated || 0
+            );
+
+
+        // Donation history
+        const donationsRef =
+            collection(
+                db,
+                "accounts",
+                currentUser.uid,
+                "donations"
+            );
+
+
+        const donationsSnapshot =
+            await getDocs(donationsRef);
+
+
+        let completedDonations = 0;
+
+
+        donationsSnapshot.forEach((donationDoc) => {
+
+            const donation =
+                donationDoc.data();
+
+
+            if (
+                donation.status ===
+                "completed"
+            ) {
+
+                completedDonations++;
+
+            }
+
+        });
+
+
+        userDonations.textContent =
+            completedDonations;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Unable to load personal impact:",
+            error
+        );
+
+
+        userTrees.textContent = "0";
+        userDonated.textContent = "$0";
+        userDonations.textContent = "0";
+
+    }
+
+}
+
+
+// ======================================================
+// AUTH STATE
+// ======================================================
+
+onAuthStateChanged(auth, async (user) => {
+
+    currentUser = user;
+
+    await loadPersonalImpact();
+
+});
 
 
 // ======================================================
@@ -402,7 +575,7 @@ if (donationForm) {
 
 
             // ==========================================
-            // CHECK LOGIN AGAIN
+            // CHECK LOGIN
             // ==========================================
 
             if (!currentUser) {
@@ -411,10 +584,15 @@ if (donationForm) {
                     "Your session has expired. Please log in again."
                 );
 
-                donationModal.hide();
+
+                if (donationModal) {
+                    donationModal.hide();
+                }
+
 
                 window.location.href =
                     "auth.html";
+
 
                 return;
 
@@ -422,42 +600,34 @@ if (donationForm) {
 
 
             // ==========================================
-            // FORM VALUES
+            // GET FORM VALUES
             // ==========================================
 
-            const cardName =
-                document
-                    .getElementById("cardName")
-                    .value
-                    .trim();
+            const enteredCardName =
+                cardName?.value
+                    .trim() || "";
 
 
-            const card =
-                document
-                    .getElementById("cardNumber")
-                    .value
-                    .replace(/\s/g, "");
+            const enteredCardNumber =
+                cardNumber?.value
+                    .replace(/\s/g, "") || "";
 
 
-            const expiry =
-                document
-                    .getElementById("expiryDate")
-                    .value
-                    .trim();
+            const enteredExpiry =
+                expiryDate?.value
+                    .trim() || "";
 
 
-            const cvvValue =
-                document
-                    .getElementById("cvv")
-                    .value
-                    .trim();
+            const enteredCvv =
+                cvv?.value
+                    .trim() || "";
 
 
             // ==========================================
             // VALIDATION
             // ==========================================
 
-            if (!cardName) {
+            if (!enteredCardName) {
 
                 alert(
                     "Please enter the name on the card."
@@ -468,7 +638,11 @@ if (donationForm) {
             }
 
 
-            if (card.length !== 16) {
+            if (
+                !/^\d{16}$/.test(
+                    enteredCardNumber
+                )
+            ) {
 
                 alert(
                     "Please enter a valid 16-digit demo card number."
@@ -479,7 +653,11 @@ if (donationForm) {
             }
 
 
-            if (!/^\d{2}\/\d{2}$/.test(expiry)) {
+            if (
+                !/^\d{2}\/\d{2}$/.test(
+                    enteredExpiry
+                )
+            ) {
 
                 alert(
                     "Please enter the expiry date as MM/YY."
@@ -490,7 +668,11 @@ if (donationForm) {
             }
 
 
-            if (cvvValue.length !== 3) {
+            if (
+                !/^\d{3}$/.test(
+                    enteredCvv
+                )
+            ) {
 
                 alert(
                     "Please enter a 3-digit CVV."
@@ -508,6 +690,7 @@ if (donationForm) {
             const amount =
                 selectedAmount;
 
+
             const trees =
                 calculateTrees(amount);
 
@@ -523,21 +706,26 @@ if (donationForm) {
 
 
             const originalText =
-                paymentButton.innerHTML;
+                paymentButton
+                    ? paymentButton.innerHTML
+                    : "";
 
 
-            paymentButton.disabled =
-                true;
+            if (paymentButton) {
+
+                paymentButton.disabled =
+                    true;
 
 
-            paymentButton.innerHTML = `
-                <span
-                    class="spinner-border spinner-border-sm"
-                    aria-hidden="true">
-                </span>
+                paymentButton.innerHTML = `
+                    <span
+                        class="spinner-border spinner-border-sm me-2"
+                        aria-hidden="true"
+                    ></span>
+                    Processing...
+                `;
 
-                Processing...
-            `;
+            }
 
 
             try {
@@ -572,7 +760,7 @@ if (donationForm) {
 
 
                 // ======================================
-                // SAVE INDIVIDUAL DONATION
+                // SAVE DONATION HISTORY
                 // ======================================
 
                 const donationsRef =
@@ -587,30 +775,21 @@ if (donationForm) {
                 await addDoc(
                     donationsRef,
                     {
-
                         amount: amount,
-
                         trees: trees,
-
                         status: "completed",
-
-                        donatedAt:
-                            serverTimestamp()
-
+                        donatedAt: serverTimestamp()
                     }
                 );
 
 
                 // ======================================
-                // UPDATE DONATION STATS
+                // UPDATE PERSONAL STATS
                 // ======================================
 
                 await setDoc(
-
                     accountRef,
-
                     {
-
                         donationStats: {
 
                             totalDonated:
@@ -620,13 +799,10 @@ if (donationForm) {
                                 increment(trees)
 
                         }
-
                     },
-
                     {
                         merge: true
                     }
-
                 );
 
 
@@ -636,29 +812,24 @@ if (donationForm) {
 
 
                 // ======================================
-                // CLOSE PAYMENT MODAL
+                // CLOSE DONATION MODAL
                 // ======================================
 
-                donationModal.hide();
+                if (donationModal) {
+                    donationModal.hide();
+                }
 
 
                 // ======================================
                 // UPDATE SUCCESS MODAL
                 // ======================================
 
-                successTrees.textContent =
-                    trees;
+                if (successTrees) {
 
+                    successTrees.textContent =
+                        trees.toLocaleString();
 
-                // ======================================
-                // SHOW SUCCESS
-                // ======================================
-
-                setTimeout(() => {
-
-                    successModal.show();
-
-                }, 300);
+                }
 
 
                 // ======================================
@@ -667,8 +838,27 @@ if (donationForm) {
 
                 donationForm.reset();
 
-            }
 
+                // ======================================
+                // REFRESH PERSONAL IMPACT
+                // ======================================
+
+                await loadPersonalImpact();
+
+
+                // ======================================
+                // SHOW SUCCESS MODAL
+                // ======================================
+
+                setTimeout(() => {
+
+                    if (successModal) {
+                        successModal.show();
+                    }
+
+                }, 300);
+
+            }
 
             catch (error) {
 
@@ -684,15 +874,18 @@ if (donationForm) {
 
             }
 
-
             finally {
 
-                paymentButton.disabled =
-                    false;
+                if (paymentButton) {
+
+                    paymentButton.disabled =
+                        false;
 
 
-                paymentButton.innerHTML =
-                    originalText;
+                    paymentButton.innerHTML =
+                        originalText;
+
+                }
 
             }
 
@@ -709,8 +902,7 @@ if (donationForm) {
 updateDonationDisplay(1);
 
 
-// Select $1 button initially
-
+// Select $1 by default
 const firstOption =
     document.querySelector(
         '.donation-option[data-amount="1"]'
