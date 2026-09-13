@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My GreenLife | Dashboard</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <!-- Dashboard CSS -->
+    <link rel="stylesheet" href="css/user-dashboard.css">
+</head>
+
+<body class="dashboard-page">
+<div class="dashboard-shell">
+
+    <!-- ==================================================
+         NAVBAR
+    ================================================== -->
+    <nav class="dashboard-nav">
+        <a href="index.html" class="dashboard-brand">
+            <i class="bi bi-leaf-fill"></i>
+            <span>GreenLife</span>
+        </a>
+
+        <div class="dashboard-nav-links">
+            <a href="index.html">Home</a>
+            <a href="eco-tips.html">Eco Tips</a>
+            <a href="blog.html">Articles</a>
+            <a href="support.html">Impact</a>
+            <a href="premium.html">Premium</a>
+        </div>
+
+        <div id="navActions" class="dashboard-nav-actions"></div>
+    </nav>
+
+    <!-- ==================================================
+         HERO
+    ================================================== -->
+    <header class="dashboard-hero">
+        <div class="hero-content">
+            <span class="dashboard-label">
+                <i class="bi bi-person-circle"></i>
+                MY GREENLIFE
+            </span>
+
+            <h1>
+                Welcome back,
+                <span id="userName">Green Friend</span> 👋
+            </h1>
+
+            <p>
+                Here's a look at your GreenLife journey, progress,
+                plants and environmental impact.
+            </p>
+        </div>
+
+        <div class="hero-date">
+            <i class="bi bi-calendar3"></i>
+            <span id="currentDate">Today</span>
+        </div>
+    </header>
+
+    <!-- ==================================================
+         QUICK STATS
+    ================================================== -->
+    <section class="dashboard-stats">
+        <article class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-flower1"></i>
+            </div>
+            <div>
+                <span>My Plants</span>
+                <strong id="plantCount">0</strong>
+                <small>saved plants</small>
+            </div>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-tree-fill"></i>
+            </div>
+            <div>
+                <span>My Impact</span>
+                <strong id="impactTrees">0</strong>
+                <small>trees supported</small>
+            </div>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-fire"></i>
+            </div>
+            <div>
+                <span>Green Streak</span>
+                <strong id="greenStreak">0</strong>
+                <small>days</small>
+            </div>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-icon">
+                <i class="bi bi-trophy-fill"></i>
+            </div>
+            <div>
+                <span>Achievements</span>
+                <strong id="badgeCount">0</strong>
+                <small>badges earned</small>
+            </div>
+        </article>
+    </section>
+
+    <!-- ==================================================
+         DASHBOARD CONTENT
+    ================================================== -->
+    <main class="dashboard-grid">
+
+        <!-- MY PLANTS -->
+        <section class="dashboard-card plants-card">
+            <div class="card-header">
+                <div>
+                    <span class="card-label">YOUR COLLECTION</span>
+                    <h2>My Plants</h2>
+                    <p>Keep track of the plants you're currently caring for.</p>
+                </div>
+
+                <a href="eco-tips.html" class="card-link">
+                    Explore
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+
+            <div id="savedPlants" class="plant-list">
+                <div class="empty-dashboard">
+                    <div class="empty-icon">
+                        <i class="bi bi-flower1"></i>
+                    </div>
+                    <h3>No plants yet</h3>
+                    <p>Explore Eco Tips and save your first plant.</p>
+                    <a href="eco-tips.html" class="small-primary-btn">
+                        Discover Plants
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- MEMBERSHIP -->
+        <section class="dashboard-card premium-status-card">
+            <div class="card-header">
+                <div>
+                    <span class="card-label">MEMBERSHIP</span>
+                    <h2>Your Plan</h2>
+                </div>
+                <i class="bi bi-stars card-header-icon"></i>
+            </div>
+
+            <div class="membership-box">
+                <div class="membership-icon">
+                    <i class="bi bi-stars"></i>
+                </div>
+
+                <div class="membership-info">
+                    <span>Current plan</span>
+                    <strong id="subscriptionPlan">Free</strong>
+                    <small id="subscriptionStatus">Free membership</small>
+                </div>
+            </div>
+
+            <div class="membership-details">
+                <div>
+                    <span>Billing</span>
+                    <strong id="billingCycle">None</strong>
+                </div>
+
+                <div>
+                    <span>Price</span>
+                    <strong id="subscriptionPrice">0₫</strong>
+                </div>
+            </div>
+
+            <a href="premium.html" class="membership-button" id="membershipAction">
+                Explore Premium
+                <i class="bi bi-arrow-right"></i>
+            </a>
+        </section>
+
+        <!-- MY IMPACT -->
+        <section class="dashboard-card impact-card">
+            <div class="card-header">
+                <div>
+                    <span class="card-label">ENVIRONMENTAL IMPACT</span>
+                    <h2>Your Impact</h2>
+                    <p>Every action adds up.</p>
+                </div>
+
+                <a href="support.html" class="card-link">
+                    View Impact
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="impact-content">
+                <div class="impact-main">
+                    <i class="bi bi-tree-fill"></i>
+                    <strong id="impactTreeLarge">0</strong>
+                    <span>trees supported</span>
+                </div>
+
+                <div class="impact-mini-grid">
+                    <div class="impact-mini">
+                        <span>Contributions</span>
+                        <strong id="donationCount">0</strong>
+                    </div>
+
+                    <div class="impact-mini">
+                        <span>Total contributed</span>
+                        <strong id="totalDonated">$0</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="impact-goal">
+                <div class="goal-heading">
+                    <span>Community Goal</span>
+                    <strong>
+                        <span id="communityTrees">0</span> /
+                        <span id="communityGoal">2000</span>
+                    </strong>
+                </div>
+
+                <div class="goal-progress">
+                    <div id="communityProgress" class="goal-progress-fill"></div>
+                </div>
+
+                <small id="communityPercentage">0% complete</small>
+            </div>
+        </section>
+
+        <!-- GREEN STREAK -->
+        <section class="dashboard-card streak-card">
+            <div class="card-header">
+                <div>
+                    <span class="card-label">KEEP GROWING</span>
+                    <h2>Green Streak</h2>
+                </div>
+
+                <i class="bi bi-fire streak-header-icon"></i>
+            </div>
+
+            <div class="streak-content">
+                <strong id="streakNumber">0</strong>
+                <span>day streak</span>
+            </div>
+
+            <div class="week-streak">
+                <div class="day">
+                    <span>M</span>
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div class="day">
+                    <span>T</span>
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div class="day">
+                    <span>W</span>
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div class="day">
+                    <span>T</span>
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div class="day">
+                    <span>F</span>
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div class="day">
+                    <span>S</span>
+                    <i class="bi bi-circle"></i>
+                </div>
+                <div class="day">
+                    <span>S</span>
+                    <i class="bi bi-circle"></i>
+                </div>
+            </div>
+
+            <div class="streak-message" id="streakMessage">
+                Start your first green action today.
+            </div>
+        </section>
+
+        <!-- GOALS -->
+        <section class="dashboard-card goals-card">
+            <div class="card-header">
+                <div>
+                    <span class="card-label">PERSONAL PROGRESS</span>
+                    <h2>My Goals</h2>
+                    <p>Set small goals and build greener habits.</p>
+                </div>
+
+                <span class="planned-badge">PLANNED</span>
+            </div>
+
+            <div class="goal-list">
+                <div class="goal-item">
+                    <div class="goal-icon">
+                        <i class="bi bi-tree"></i>
+                    </div>
+
+                    <div class="goal-info">
+                        <strong>Support 50 trees</strong>
+                        <span>25 / 50 trees</span>
+                        <div class="mini-progress">
+                            <div style="width: 50%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="goal-item">
+                    <div class="goal-icon">
+                        <i class="bi bi-book"></i>
+                    </div>
+
+                    <div class="goal-info">
+                        <strong>Read 20 Eco Tips</strong>
+                        <span>8 / 20 tips</span>
+                        <div class="mini-progress">
+                            <div style="width: 40%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="secondary-dashboard-btn" disabled>
+                <i class="bi bi-plus-lg"></i>
+                Create Custom Goal
+            </button>
+        </section>
+
+        <!-- ACHIEVEMENTS -->
+        <section class="dashboard-card achievements-card">
+            <div class="card-header">
+                <div>
+                    <span class="card-label">YOUR JOURNEY</span>
+                    <h2>Achievements</h2>
+                    <p>Milestones you'll unlock as you grow.</p>
+                </div>
+
+                <span id="achievementSummary">0 unlocked</span>
+            </div>
+
+            <div class="achievement-grid">
+                <div class="achievement">
+                    <div class="achievement-icon">
+                        <i class="bi bi-flower1"></i>
+                    </div>
+                    <strong>First Plant</strong>
+                    <small>Save your first plant</small>
+                </div>
+
+                <div class="achievement">
+                    <div class="achievement-icon">
+                        <i class="bi bi-tree-fill"></i>
+                    </div>
+                    <strong>Tree Supporter</strong>
+                    <small>Support 10 trees</small>
+                </div>
+
+                <div class="achievement">
+                    <div class="achievement-icon">
+                        <i class="bi bi-fire"></i>
+                    </div>
+                    <strong>Green Streak</strong>
+                    <small>Reach 7 days</small>
+                </div>
+
+                <div class="achievement locked">
+                    <div class="achievement-icon">
+                        <i class="bi bi-globe-americas"></i>
+                    </div>
+                    <strong>Green Champion</strong>
+                    <small>Complete 25 actions</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- RECOMMENDED -->
+        <section class="dashboard-card recommended-card">
+            <div class="card-header">
+                <div>
+                    <span class="card-label">FOR YOU</span>
+                    <h2>Recommended</h2>
+                    <p>Discover something new for your journey.</p>
+                </div>
+            </div>
+
+            <div class="recommendation-list">
+                <a href="eco-tips.html" class="recommendation">
+                    <div class="recommendation-icon">
+                        <i class="bi bi-flower1"></i>
+                    </div>
+
+                    <div>
+                        <strong>Find your next plant</strong>
+                        <span>Explore the GreenLife Plant Encyclopedia.</span>
+                    </div>
+
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+
+                <a href="support.html" class="recommendation">
+                    <div class="recommendation-icon">
+                        <i class="bi bi-heart-fill"></i>
+                    </div>
+
+                    <div>
+                        <strong>Make an impact</strong>
+                        <span>See how your support contributes to the community.</span>
+                    </div>
+
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+
+                <a href="premium.html" class="recommendation">
+                    <div class="recommendation-icon">
+                        <i class="bi bi-stars"></i>
+                    </div>
+
+                    <div>
+                        <strong>Unlock Premium</strong>
+                        <span>Get more personalized GreenLife features.</span>
+                    </div>
+
+                    <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================================================
+         ROADMAP
+    ================================================== -->
+    <section class="dashboard-roadmap">
+        <div class="roadmap-heading">
+            <span class="card-label">WHAT'S NEXT</span>
+            <h2>Growing GreenLife</h2>
+            <p>More ways to learn, act and make an impact are on the way.</p>
+        </div>
+
+        <div class="roadmap-grid">
+            <div class="roadmap-item">
+                <span class="roadmap-status">PLANNED</span>
+                <i class="bi bi-bell"></i>
+                <h3>Smart Care Reminders</h3>
+                <p>Get reminders for important plant-care activities.</p>
+            </div>
+
+            <div class="roadmap-item">
+                <span class="roadmap-status">PLANNED</span>
+                <i class="bi bi-people"></i>
+                <h3>Community Challenges</h3>
+                <p>Take part in shared environmental challenges.</p>
+            </div>
+
+            <div class="roadmap-item">
+                <span class="roadmap-status">PLANNED</span>
+                <i class="bi bi-bar-chart"></i>
+                <h3>Advanced Impact Analytics</h3>
+                <p>Understand your environmental progress in more detail.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================================================
+         FOOTER
+    ================================================== -->
+    <footer class="dashboard-footer">
+        <div>
+            <i class="bi bi-leaf-fill"></i>
+            <strong>GreenLife</strong>
+            <p>Learn. Grow. Make an Impact.</p>
+        </div>
+
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="eco-tips.html">Eco Tips</a>
+            <a href="support.html">Support</a>
+            <a href="premium.html">Premium</a>
+        </div>
+
+        <span>© 2026 GreenLife. Student project.</span>
+    </footer>
+
+</div>
+
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Auth Guard -->
+<script type="module" src="js/authGuard.js"></script>
+
+<!-- Navbar -->
+<script type="module" src="js/navbar.js"></script>
+
+<!-- Dashboard -->
+<script type="module" src="js/user-dashboard.js"></script>
+
+</body>
+</html>

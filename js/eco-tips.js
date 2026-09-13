@@ -2,10 +2,16 @@
    ECO TIPS — GREENLIFE + PERENUAL
    ====================================================== */
 
-// IMPORTANT:
-// Put your Perenual API key here locally.
-// Do NOT publish your API key to GitHub.
-const API_KEY = "sk-ro4W6a782c7a3598419236";
+import {
+    auth,
+    db,
+    onAuthStateChanged,
+    doc,
+    getDoc,
+    setDoc
+} from "./firebase.js";
+
+const API_KEY = "KEY_HERE";
 
 const API_BASE = "https://www.perenual.com/api/v2";
 
@@ -83,25 +89,30 @@ let currentLocalPage = 1;
 
 let totalLocalPages = 1;
 
+// ======================================================
+// FAVORITES
+// ======================================================
+
+let currentUser = null;
+let savedPlantIds = new Set();
 
 // ======================================================
 // INITIALIZE
 // ======================================================
 
 document.addEventListener("DOMContentLoaded", () => {
-
     initializeSearch();
-
     initializeFilters();
-
     initializeRetry();
-
     updateClearButton();
-
     updateDonationLikeDefaults();
 
-    loadPlants(1);
+    onAuthStateChanged(auth, async (user) => {
+        currentUser = user;
 
+        await loadFavorites();
+        await loadPlants(1);
+    });
 });
 
 
@@ -1094,6 +1105,239 @@ function renderPlants(
 
 }
 
+// ======================================================
+// LOAD FAVORITES
+// ======================================================
+
+async function loadFavorites() {
+    savedPlantIds = new Set();
+
+    if (!currentUser) {
+        return;
+    }
+
+    try {
+        const accountRef = doc(
+            db,
+            "accounts",
+            currentUser.uid
+        );
+
+        const snapshot = await getDoc(accountRef);
+
+        if (!snapshot.exists()) {
+            return;
+        }
+
+        const account = snapshot.data();
+
+        const savedPlants = Array.isArray(
+            account.savedPlants
+        )
+            ? account.savedPlants
+            : [];
+
+        savedPlantIds = new Set(
+            savedPlants.map(
+                plant => String(plant.id)
+            )
+        );
+    }
+
+    catch (error) {
+        console.error(
+            "Failed to load favorite plants:",
+            error
+        );
+    }
+}
+
+
+// ======================================================
+// TOGGLE FAVORITE
+// ======================================================
+
+async function toggleFavorite(
+    plant,
+    button
+) {
+    if (!currentUser) {
+        alert(
+            "Please log in to save your favorite plants."
+        );
+
+        window.location.href = "auth.html";
+
+        return;
+    }
+
+    if (!plant.id) {
+        return;
+    }
+
+    const plantId = String(plant.id);
+
+    const accountRef = doc(
+        db,
+        "accounts",
+        currentUser.uid
+    );
+
+    try {
+        button.disabled = true;
+
+        const snapshot = await getDoc(
+            accountRef
+        );
+
+        if (!snapshot.exists()) {
+            throw new Error(
+                "Account document not found."
+            );
+        }
+
+        const account = snapshot.data();
+
+        const savedPlants =
+            Array.isArray(account.savedPlants)
+                ? account.savedPlants
+                : [];
+
+        const existingIndex =
+            savedPlants.findIndex(
+                savedPlant =>
+                    String(savedPlant.id) === plantId
+            );
+
+        if (existingIndex !== -1) {
+            // ==========================================
+            // REMOVE FAVORITE
+            // ==========================================
+
+            savedPlants.splice(
+                existingIndex,
+                1
+            );
+
+            savedPlantIds.delete(
+                plantId
+            );
+
+            updateFavoriteButton(
+                button,
+                false
+            );
+        }
+
+        else {
+            // ==========================================
+            // ADD FAVORITE
+            // ==========================================
+
+            const savedPlant = {
+                id: plant.id,
+                name: getPlantName(plant),
+                scientificName:
+                    getScientificName(plant),
+                image: getPlantImage(plant),
+                category:
+                    getCategoryLabel(
+                        plant.greenlifeCategory
+                    )
+            };
+
+            savedPlants.push(
+                savedPlant
+            );
+
+            savedPlantIds.add(
+                plantId
+            );
+
+            updateFavoriteButton(
+                button,
+                true
+            );
+        }
+
+        // ==========================================
+        // SAVE PLAIN ARRAY TO FIRESTORE
+        // ==========================================
+
+        await setDoc(
+            accountRef,
+            {
+                savedPlants: savedPlants
+            },
+            {
+                merge: true
+            }
+        );
+
+    }
+
+    catch (error) {
+        console.error(
+            "Failed to update favorite:",
+            error
+        );
+
+        alert(
+            "We couldn't update your favorites. Please try again."
+        );
+
+        // Reload the correct state if the save failed
+        await loadFavorites();
+
+        updateFavoriteButton(
+            button,
+            savedPlantIds.has(plantId)
+        );
+    }
+
+    finally {
+        button.disabled = false;
+    }
+}
+
+
+// ======================================================
+// UPDATE FAVORITE BUTTON
+// ======================================================
+
+function updateFavoriteButton(
+    button,
+    isSaved
+) {
+    if (!button) {
+        return;
+    }
+
+    button.classList.toggle(
+        "active",
+        isSaved
+    );
+
+    button.innerHTML = `
+        <i class="bi ${
+            isSaved
+                ? "bi-heart-fill"
+                : "bi-heart"
+        }"></i>
+    `;
+
+    button.setAttribute(
+        "aria-label",
+        isSaved
+            ? "Remove from favorites"
+            : "Add to favorites"
+    );
+
+    button.title =
+        isSaved
+            ? "Remove from favorites"
+            : "Save plant";
+}
 
 // ======================================================
 // CREATE PLANT CARD
@@ -1145,6 +1389,31 @@ function createPlantCard(plant) {
                 loading="lazy"
                 onerror="this.src='images/plant-placeholder.jpg'"
             >
+
+            <button
+                type="button"
+                class="favorite-btn ${
+                    savedPlantIds.has(String(plant.id))
+                        ? "active"
+                        : ""
+                }"
+                aria-label="${
+                    savedPlantIds.has(String(plant.id))
+                        ? "Remove from favorites"
+                        : "Add to favorites"
+                }"
+                title="${
+                    savedPlantIds.has(String(plant.id))
+                        ? "Remove from favorites"
+                        : "Save plant"
+                }"
+            >
+                <i class="bi ${
+                    savedPlantIds.has(String(plant.id))
+                        ? "bi-heart-fill"
+                        : "bi-heart"
+                }"></i>
+            </button>
 
         </div>
 
@@ -1222,6 +1491,24 @@ function createPlantCard(plant) {
 
     }
 
+    const favoriteButton =
+    card.querySelector(
+        ".favorite-btn"
+    );
+
+    if (favoriteButton) {
+        favoriteButton.addEventListener(
+            "click",
+            async (event) => {
+                event.stopPropagation();
+
+                await toggleFavorite(
+                    plant,
+                    favoriteButton
+                );
+            }
+        );
+    }
 
     return card;
 

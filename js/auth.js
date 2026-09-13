@@ -1,246 +1,618 @@
 import {
     auth,
     db,
-
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     sendPasswordResetEmail,
-
     doc,
     setDoc,
     getDoc,
-
     serverTimestamp
-
 } from "./firebase.js";
+
+
+// ======================================================
+// MESSAGE
+// ======================================================
 
 function showMessage(message, success = true) {
 
-    const status = document.getElementById("statusMessage");
+    const status =
+        document.getElementById("statusMessage");
+
+    if (!status) {
+        return;
+    }
 
     status.textContent = message;
 
-    status.className = success ? "status success" : "status error";
+    status.className =
+        success
+            ? "status success"
+            : "status error";
+}
+
+
+// ======================================================
+// DEFAULT SUBSCRIPTION
+// ======================================================
+
+const DEFAULT_SUBSCRIPTION = {
+
+    plan: "Free",
+
+    billingCycle: null,
+
+    price: 0,
+
+    currency: "VND",
+
+    status: "inactive",
+
+    startedAt: null
+
+};
+
+
+// ======================================================
+// MAKE SURE ACCOUNT HAS SUBSCRIPTION
+// ======================================================
+
+async function ensureSubscription(user) {
+
+    if (!user) {
+        return;
+    }
+
+
+    const accountRef =
+        doc(
+            db,
+            "accounts",
+            user.uid
+        );
+
+
+    const accountSnapshot =
+        await getDoc(accountRef);
+
+
+    // Account does not exist
+    if (!accountSnapshot.exists()) {
+
+        await setDoc(
+            accountRef,
+            {
+                uid: user.uid,
+
+                email:
+                    user.email || "",
+
+                subscription:
+                    DEFAULT_SUBSCRIPTION
+            },
+            {
+                merge: true
+            }
+        );
+
+        return;
+    }
+
+
+    const accountData =
+        accountSnapshot.data();
+
+
+    /*
+        Old accounts were created before
+        the Premium system existed.
+
+        Add the default subscription only
+        when the field is missing.
+    */
+
+    if (!accountData.subscription) {
+
+        await setDoc(
+            accountRef,
+            {
+                subscription:
+                    DEFAULT_SUBSCRIPTION
+            },
+            {
+                merge: true
+            }
+        );
+
+        console.log(
+            "Added default Free subscription to existing account."
+        );
+
+    }
 
 }
-// ==============================
-// FORM SWITCHING
-// ==============================
 
-const forms = document.querySelectorAll(".form");
-const tabs = document.querySelectorAll(".tab-btn");
+
+// ======================================================
+// FORM SWITCHING
+// ======================================================
+
+const forms =
+    document.querySelectorAll(".form");
+
+const tabs =
+    document.querySelectorAll(".tab-btn");
+
 
 function showForm(formId) {
 
     forms.forEach(form => {
-        form.classList.remove("active");
+
+        form.classList.remove(
+            "active"
+        );
+
     });
+
 
     tabs.forEach(tab => {
-        tab.classList.remove("active");
+
+        tab.classList.remove(
+            "active"
+        );
+
     });
 
-    document.getElementById(formId).classList.add("active");
 
-    if (formId === "loginForm") {
-        document
-            .querySelector('[data-mode="login"]')
-            .classList.add("active");
+    const selectedForm =
+        document.getElementById(formId);
+
+
+    if (selectedForm) {
+
+        selectedForm.classList.add(
+            "active"
+        );
+
     }
 
+
+    if (formId === "loginForm") {
+
+        const loginTab =
+            document.querySelector(
+                '[data-mode="login"]'
+            );
+
+
+        if (loginTab) {
+
+            loginTab.classList.add(
+                "active"
+            );
+
+        }
+
+    }
+
+
     if (formId === "signupForm") {
-        document
-            .querySelector('[data-mode="signup"]')
-            .classList.add("active");
+
+        const signupTab =
+            document.querySelector(
+                '[data-mode="signup"]'
+            );
+
+
+        if (signupTab) {
+
+            signupTab.classList.add(
+                "active"
+            );
+
+        }
+
     }
 
 }
 
-// Login / Signup Tabs
+
+// ======================================================
+// LOGIN / SIGNUP TABS
+// ======================================================
 
 tabs.forEach(tab => {
 
-    tab.addEventListener("click", () => {
+    tab.addEventListener(
+        "click",
+        () => {
 
-        if (tab.dataset.mode === "login") {
+            if (
+                tab.dataset.mode ===
+                "login"
+            ) {
 
-            showForm("loginForm");
+                showForm(
+                    "loginForm"
+                );
 
-        } else {
+            } else {
 
-            showForm("signupForm");
+                showForm(
+                    "signupForm"
+                );
+
+            }
 
         }
-
-    });
+    );
 
 });
 
-// Forgot Password
+
+// ======================================================
+// FORGOT PASSWORD
+// ======================================================
 
 document
     .getElementById("forgotPasswordBtn")
-    ?.addEventListener("click", () => {
+    ?.addEventListener(
+        "click",
+        () => {
 
-        showForm("resetForm");
+            showForm(
+                "resetForm"
+            );
 
-    });
+        }
+    );
 
-// Back To Login
+
+// ======================================================
+// BACK TO LOGIN
+// ======================================================
 
 document
     .getElementById("backToLoginBtn")
-    ?.addEventListener("click", () => {
+    ?.addEventListener(
+        "click",
+        () => {
 
-        showForm("loginForm");
+            showForm(
+                "loginForm"
+            );
 
-    });
+        }
+    );
 
 
-// ==============================
+// ======================================================
 // LOGIN
-// ==============================
+// ======================================================
 
-const loginForm = document.getElementById("loginForm");
+const loginForm =
+    document.getElementById(
+        "loginForm"
+    );
+
 
 if (loginForm) {
 
-    loginForm.addEventListener("submit", async (e) => {
+    loginForm.addEventListener(
+        "submit",
+        async (e) => {
 
-        e.preventDefault();
+            e.preventDefault();
 
-        const email = document.getElementById("loginEmail").value.trim();
 
-        const password = document.getElementById("loginPassword").value;
+            const email =
+                document
+                    .getElementById(
+                        "loginEmail"
+                    )
+                    .value
+                    .trim();
 
-        try {
 
-            await signInWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
+            const password =
+                document
+                    .getElementById(
+                        "loginPassword"
+                    )
+                    .value;
 
-            showMessage("Login successful!");
 
-            window.location.href = "index.html";
+            try {
+
+                const credential =
+                    await signInWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+
+                /*
+                    IMPORTANT:
+
+                    This repairs old accounts
+                    that do not have a subscription
+                    field yet.
+                */
+
+                await ensureSubscription(
+                    credential.user
+                );
+
+
+                showMessage(
+                    "Login successful!"
+                );
+
+
+                window.location.href =
+                    "index.html";
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Login error:",
+                    error
+                );
+
+
+                showMessage(
+                    error.message,
+                    false
+                );
+
+            }
 
         }
-
-        catch (error) {
-
-            showMessage(error.message, false);
-
-        }
-
-    });
+    );
 
 }
 
-// ==============================
-// REGISTER
-// ==============================
 
-const signupForm = document.getElementById("signupForm");
+// ======================================================
+// REGISTER
+// ======================================================
+
+const signupForm =
+    document.getElementById(
+        "signupForm"
+    );
+
 
 if (signupForm) {
 
-    signupForm.addEventListener("submit", async (e) => {
+    signupForm.addEventListener(
+        "submit",
+        async (e) => {
 
-        e.preventDefault();
+            e.preventDefault();
 
-        const name = document.getElementById("signupName").value.trim();
 
-        const email = document.getElementById("signupEmail").value.trim();
+            const name =
+                document
+                    .getElementById(
+                        "signupName"
+                    )
+                    .value
+                    .trim();
 
-        const password = document.getElementById("signupPassword").value;
 
-        const confirm = document.getElementById("confirmPassword").value;
+            const email =
+                document
+                    .getElementById(
+                        "signupEmail"
+                    )
+                    .value
+                    .trim();
 
-        if (password !== confirm) {
 
-            showMessage("Passwords do not match.", false);
+            const password =
+                document
+                    .getElementById(
+                        "signupPassword"
+                    )
+                    .value;
 
-            return;
 
-        }
+            const confirm =
+                document
+                    .getElementById(
+                        "confirmPassword"
+                    )
+                    .value;
 
-        try {
 
-            const credential =
-                await createUserWithEmailAndPassword(
-                    auth,
-                    email,
-                    password
+            // ------------------------------------------
+            // PASSWORD MATCH
+            // ------------------------------------------
+
+            if (
+                password !==
+                confirm
+            ) {
+
+                showMessage(
+                    "Passwords do not match.",
+                    false
                 );
 
-            const user = credential.user;
+                return;
 
-            await setDoc(doc(db, "accounts", user.uid), {
+            }
 
-                uid: user.uid,
 
-                name,
+            try {
 
-                email,
+                // --------------------------------------
+                // CREATE FIREBASE USER
+                // --------------------------------------
 
-                isAdmin: false,
+                const credential =
+                    await createUserWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
 
-                createdAt: serverTimestamp(),
-                
-                donations: [],
 
-                donationStats: {
-                    totalDonated: 0,
-                    totalTrees: 0
-                },
+                const user =
+                    credential.user;
 
-            });
 
-            showMessage("Account created successfully!");
+                // --------------------------------------
+                // CREATE ACCOUNT DOCUMENT
+                // --------------------------------------
 
-            window.location.href = "index.html";
+                await setDoc(
+                    doc(
+                        db,
+                        "accounts",
+                        user.uid
+                    ),
+                    {
+
+                        uid:
+                            user.uid,
+
+                        name:
+                            name,
+
+                        email:
+                            email,
+
+                        isAdmin:
+                            false,
+
+                        createdAt:
+                            serverTimestamp(),
+
+                        donations:
+                            [],
+
+                        donationStats: {
+
+                            totalDonated:
+                                0,
+
+                            totalTrees:
+                                0
+
+                        },
+
+
+                        // =================================
+                        // PREMIUM DEFAULT
+                        // =================================
+
+                        subscription:
+                            DEFAULT_SUBSCRIPTION
+
+                    }
+                );
+
+
+                console.log(
+                    "Account created with Free subscription."
+                );
+
+
+                showMessage(
+                    "Account created successfully!"
+                );
+
+
+                window.location.href =
+                    "index.html";
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Registration error:",
+                    error
+                );
+
+
+                showMessage(
+                    error.message,
+                    false
+                );
+
+            }
 
         }
-
-        catch (error) {
-
-            showMessage(error.message, false);
-
-        }
-
-    });
+    );
 
 }
 
-// ==============================
-// RESET PASSWORD
-// ==============================
 
-const resetForm = document.getElementById("resetForm");
+// ======================================================
+// RESET PASSWORD
+// ======================================================
+
+const resetForm =
+    document.getElementById(
+        "resetForm"
+    );
+
 
 if (resetForm) {
 
-    resetForm.addEventListener("submit", async (e) => {
+    resetForm.addEventListener(
+        "submit",
+        async (e) => {
 
-        e.preventDefault();
+            e.preventDefault();
 
-        const email = document.getElementById("resetEmail").value.trim();
 
-        try {
+            const email =
+                document
+                    .getElementById(
+                        "resetEmail"
+                    )
+                    .value
+                    .trim();
 
-            await sendPasswordResetEmail(auth, email);
 
-            showMessage("Password reset email sent.");
+            try {
+
+                await sendPasswordResetEmail(
+                    auth,
+                    email
+                );
+
+
+                showMessage(
+                    "Password reset email sent."
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Password reset error:",
+                    error
+                );
+
+
+                showMessage(
+                    error.message,
+                    false
+                );
+
+            }
 
         }
-
-        catch (error) {
-
-            showMessage(error.message, false);
-
-        }
-
-    });
+    );
 
 }
